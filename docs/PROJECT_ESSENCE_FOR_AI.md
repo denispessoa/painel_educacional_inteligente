@@ -40,7 +40,7 @@ Use este arquivo como contexto base para pedir insights tecnicos, de produto e d
   - FKs obrigatorias entre hierarquia.
   - Unicidade em indicadores por `turma_id + ano + trimestre`.
   - Sem cascade em deletes com dependencia (bloqueio por integridade).
-- IMA (agregado): media de leitura e escrita.
+- IMA (agregado): media operacional de leitura e escrita; base pedagogica oficial registrada em `docs/IMA_REFERENCE_BASE.md`.
 
 ## 6) Contratos de API (visao curta)
 - CRUD base:

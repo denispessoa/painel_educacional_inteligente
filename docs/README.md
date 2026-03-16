@@ -3,6 +3,10 @@
 ## Documentos de contexto
 - `11_MINI_ROADMAP_30_DAYS.md`
 - `ARCHITECTURE_UPDATE_BI.md`
+- `IMA_REFERENCE_BASE.md`
+  - base oficial de matrizes, escalas e limites semanticos para evolucao do IMA medio
+- `references/`
+  - copias versionadas de referencias oficiais `SAEB` e `CNCA`
 - `adr/ADR-004-mvp-priority.md`
 - `adr/ADR-005-commercial-model-post-mvp.md`
 - `12_ROADMAP_POS_MVP.md`
