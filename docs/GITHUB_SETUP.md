@@ -29,6 +29,18 @@ git remote add origin git@github.com:SEU-USUARIO/educacao-inteligente.git
 git push -u origin main
 ```
 
+Alternativa com script do projeto:
+
+```powershell
+.\scripts\git_save.ps1 -Message "chore: first github push" -RemoteUrl https://github.com/SEU-USUARIO/educacao-inteligente.git
+```
+
+O script:
+- faz `git add .`;
+- cria o commit;
+- cadastra `origin` se ele ainda nao existir;
+- executa `push` na branch atual.
+
 ## 3) Fluxo diario recomendado
 Verificar mudancas:
 
@@ -52,6 +64,12 @@ Enviar ao GitHub:
 
 ```powershell
 git push
+```
+
+Alternativa simplificada:
+
+```powershell
+.\scripts\git_save.ps1 -Message "feat: descreva a alteracao"
 ```
 
 ## 4) Estrategia simples de branches

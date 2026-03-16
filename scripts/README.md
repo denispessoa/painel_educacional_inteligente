@@ -39,6 +39,29 @@ Com parametros customizados:
 ```
 
 ## Backup e restore (Fase 5)
+### `git_save.ps1`
+Automatiza `git add .`, `git commit` e `git push`.
+
+Uso padrao:
+```powershell
+.\scripts\git_save.ps1 -Message "docs: atualiza guia do metabase"
+```
+
+Primeira conexao com GitHub no mesmo comando:
+```powershell
+.\scripts\git_save.ps1 -Message "chore: primeiro push" -RemoteUrl https://github.com/SEU-USUARIO/educacao-inteligente.git
+```
+
+Validar sem executar:
+```powershell
+.\scripts\git_save.ps1 -Message "teste" -DryRun
+```
+
+Criar commit sem push:
+```powershell
+.\scripts\git_save.ps1 -Message "wip: ajustes locais" -SkipPush
+```
+
 ### `backup_postgres.ps1`
 Gera backup SQL do banco `educacao` no container `postgres`.
 
