@@ -12,13 +12,36 @@ Hierarquia de dados:
 
 ## Subir ambiente local
 
-Na raiz do repositorio:
+Modo containerizado na raiz do repositorio:
 
 ```powershell
-docker compose up -d
+docker compose up -d postgres api
 ```
 
-Na pasta `backend`:
+Esse comando sobe:
+- `postgres` na porta `5433`
+- `api` na porta `8000`
+
+Smoke test rapido da stack containerizada:
+```powershell
+.\scripts\smoke_api.ps1
+```
+
+Para a camada BI:
+```powershell
+Copy-Item .env.example .env
+.\scripts\provision_metabase_db.ps1
+docker compose up -d metabase
+```
+
+Modo desenvolvimento local na pasta `backend`:
+
+```powershell
+docker compose up -d postgres
+docker compose stop api
+```
+
+Depois:
 
 ```powershell
 python -m venv venv
@@ -30,6 +53,10 @@ uvicorn app.main:app --reload
 API:
 - Swagger: `http://127.0.0.1:8000/docs`
 - Health: `http://127.0.0.1:8000/health`
+
+Observacao:
+- para desenvolvimento diario, o fluxo recomendado continua sendo `postgres` via Docker e `uvicorn --reload` local;
+- a API containerizada existe para smoke test, reproducao do ambiente e base de deploy.
 
 ## Variaveis de ambiente
 - `DATABASE_URL`
@@ -281,7 +308,7 @@ python -m pytest -q
 
 Pipeline CI:
 - arquivo: `.github/workflows/backend-ci.yml`
-- executa `pip check` + `pytest` automaticamente em `push`/`pull_request`.
+- executa `pip check` + `pytest` + `docker build` automaticamente em `push`/`pull_request`.
 
 Arquivos de teste por dominio:
 - `tests/test_health.py`
@@ -301,7 +328,8 @@ Sintoma:
 Acao:
 1. Abrir Docker Desktop.
 2. Aguardar status "Engine running".
-3. Rodar novamente `docker compose up -d`.
+3. Rodar novamente `docker compose up -d postgres api`.
+4. Validar com `.\scripts\smoke_api.ps1`.
 
 ### Erro ao ativar `venv`
 Sintoma:

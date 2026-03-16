@@ -15,12 +15,17 @@ Procedimentos tecnicos para operar o ambiente local do projeto ate a Fase 5.
 ### 1. Banco
 Na raiz do repositorio:
 ```powershell
-docker compose up -d postgres
+docker compose up -d postgres api
 ```
 
 Validar container:
 ```powershell
 docker compose ps
+```
+
+Smoke test da API:
+```powershell
+.\scripts\smoke_api.ps1
 ```
 
 ### 1.1 Provisionar metadata do Metabase
@@ -40,7 +45,8 @@ docker compose up -d metabase
 ```
 
 Acesso local:
-- `http://127.0.0.1:3000`
+- API: `http://127.0.0.1:8000`
+- Metabase: `http://127.0.0.1:3000`
 
 ### 2. API
 Na pasta `backend`:
@@ -110,7 +116,12 @@ docker compose logs -f metabase
 ```
 
 Logs da API:
-- observar output do processo `uvicorn` (eventos JSON de startup/request/shutdown).
+- em modo container:
+```powershell
+docker compose logs -f api
+```
+- em modo local:
+  - observar output do processo `uvicorn` (eventos JSON de startup/request/shutdown)
 
 ## Reinicio rapido
 Reiniciar somente banco:
@@ -123,6 +134,11 @@ Reiniciar Metabase:
 docker compose restart metabase
 ```
 
+Reiniciar API:
+```powershell
+docker compose restart api
+```
+
 ## Reset completo de ambiente
 Atencao: remove dados locais do banco.
 
@@ -131,7 +147,7 @@ docker compose down -v
 docker compose up -d postgres
 Get-Content .\database\views\ima_view.sql | docker compose exec -T postgres psql -U postgres -d educacao
 .\scripts\provision_metabase_db.ps1
-docker compose up -d metabase
+docker compose up -d api metabase
 ```
 
 ## Backup e restore (Fase 5)
@@ -160,7 +176,7 @@ Restore do metadata DB do Metabase:
 ### Docker daemon indisponivel
 1. Abrir Docker Desktop.
 2. Aguardar engine iniciar.
-3. Reexecutar `docker compose up -d postgres`.
+3. Reexecutar `docker compose up -d postgres api`.
 
 ### Erro ao ativar venv no PowerShell
 Executar uma vez:
@@ -179,6 +195,7 @@ python -m pytest -q
 Verificar:
 1. `docker compose ps` com container `postgres` em estado `running`.
 2. `DATABASE_URL` apontando para `localhost:5433`.
+3. Se estiver usando a stack containerizada, validar `docker compose logs -f api`.
 
 ## Checklist de gate para inicio da Fase 4
 - Documentacao tecnica critica criada e atualizada:

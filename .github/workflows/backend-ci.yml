@@ -4,10 +4,12 @@ on:
   push:
     paths:
       - "backend/**"
+      - "docker-compose.yml"
       - ".github/workflows/backend-ci.yml"
   pull_request:
     paths:
       - "backend/**"
+      - "docker-compose.yml"
       - ".github/workflows/backend-ci.yml"
 
 jobs:
@@ -38,3 +40,6 @@ jobs:
 
       - name: Run test suite
         run: python -m pytest -q
+
+      - name: Build API image
+        run: docker build -t educacao-api ./backend

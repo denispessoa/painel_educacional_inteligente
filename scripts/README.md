@@ -5,7 +5,7 @@ Script simples para subir dependencias de infraestrutura via Docker Compose.
 
 Conteudo atual:
 ```bash
-docker compose up -d postgres
+docker compose up -d postgres api
 ```
 
 ## Como usar
@@ -17,7 +17,7 @@ chmod +x scripts/setup.sh
 
 No Windows/PowerShell, preferir comando direto:
 ```powershell
-docker compose up -d postgres
+docker compose up -d postgres api
 ```
 
 ## Pre-requisitos
@@ -60,6 +60,19 @@ Validar sem executar:
 Criar commit sem push:
 ```powershell
 .\scripts\git_save.ps1 -Message "wip: ajustes locais" -SkipPush
+```
+
+### `smoke_api.ps1`
+Executa uma validacao rapida da API e endpoints principais da stack local.
+
+Uso padrao:
+```powershell
+.\scripts\smoke_api.ps1
+```
+
+Com URL customizada:
+```powershell
+.\scripts\smoke_api.ps1 -BaseUrl http://127.0.0.1:8000
 ```
 
 ### `backup_postgres.ps1`

@@ -16,11 +16,20 @@ Guia rapido para resposta inicial de incidentes operacionais da API e banco.
 ```powershell
 Get-Process | Where-Object { $_.ProcessName -like '*python*' -or $_.ProcessName -like '*uvicorn*' }
 ```
+Se estiver usando container:
+```powershell
+docker compose ps
+docker compose logs -f api
+```
 2. Validar health:
 ```powershell
 curl http://127.0.0.1:8000/health
 ```
 3. Reiniciar API:
+```powershell
+docker compose restart api
+```
+Se a API estiver rodando localmente em vez de container:
 ```powershell
 cd backend
 python -m uvicorn app.main:app --reload

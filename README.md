@@ -34,30 +34,45 @@ Repositorio do MVP da plataforma municipal com foco em dados agregados de alfabe
 - `scripts/`: scripts de bootstrap local.
 
 ## Quickstart local (Windows PowerShell)
-1. Subir banco:
+### Modo A - Stack containerizada
+1. Subir API + banco:
+```powershell
+docker compose up -d postgres api
+```
+2. Validar a API containerizada:
+```powershell
+.\scripts\smoke_api.ps1
+```
+3. Subir Metabase local quando precisar da camada BI:
+```powershell
+Copy-Item .env.example .env
+.\scripts\provision_metabase_db.ps1
+docker compose up -d metabase
+```
+
+### Modo B - Desenvolvimento local com hot reload
+1. Subir somente o banco:
 ```powershell
 docker compose up -d postgres
 ```
-2. Configurar backend:
+2. Se o container `api` estiver rodando, parar antes:
+```powershell
+docker compose stop api
+```
+3. Configurar backend:
 ```powershell
 cd backend
 python -m venv venv
 .\venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
-3. Subir API:
+4. Subir API localmente:
 ```powershell
 uvicorn app.main:app --reload
 ```
-4. Executar testes:
+5. Executar testes:
 ```powershell
 python -m pytest -q
-```
-5. Subir Metabase local (opcional na Fase 5.1):
-```powershell
-Copy-Item .env.example .env
-.\scripts\provision_metabase_db.ps1
-docker compose up -d metabase
 ```
 
 ## Variaveis de ambiente
