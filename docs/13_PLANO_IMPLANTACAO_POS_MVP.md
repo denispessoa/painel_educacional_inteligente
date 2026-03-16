@@ -1,94 +1,47 @@
-# Plano de Implantacao das Fases Pos-MVP
+# Plano de Implantacao Pos-MVP
 
-Plano de implantacao para as fases 5-8, com foco em previsibilidade, baixo risco e continuidade operacional.
+## Objetivo
+Executar a evolucao da plataforma sem quebrar o MVP atual.
 
-## Principios
-- Implantacao incremental por ondas.
-- Compatibilidade retroativa dos contratos publicos.
-- Controle por gates de qualidade antes de promover ambiente.
-- Rollback claro para cada release.
+## Baseline oficial
+Arquitetura de referencia:
+`Municipio -> Escola -> Turma -> Avaliacao -> Indicadores de aprendizagem`
 
-## Ambientes e objetivos
-- `dev`: desenvolvimento e validacao tecnica diaria.
-- `hml`: homologacao funcional com validacao de negocio e BI.
-- `prod`: uso operacional oficial.
+Pipeline analitico de referencia:
+`Avaliacoes da Rede -> fato_aprendizagem -> vw_desempenho_aprendizagem -> Metabase`
 
-## Estrategia por onda
+## Sequencia recomendada
+### Etapa 1 - Documentacao e alinhamento
+- consolidar `README.md`, `SYSTEM_CONTEXT.md`, `EDUCATIONAL_DATA_ARCHITECTURE.md`, `MIGRATION_PLAN_EDUCATIONAL_ARCHITECTURE.md` e ADRs como fonte de verdade
+- alinhar documentacao operacional ao mesmo contrato
 
-## Onda 1 - Base operacional (Fase 5)
-- Implantar CI/CD, observabilidade minima e runbooks.
-- Gate para avancar:
-  - testes automatizados verdes
-  - deploy de homologacao automatizado
-  - validacao de restore de backup
+### Etapa 2 - Banco
+- criar `avaliacoes`
+- adicionar `ciclo_avaliativo`
+- garantir `fonte_avaliacao`
+- manter `municipios`, `escolas`, `turmas` e `indicadores_trimestrais` intactos
 
-## Onda 2 - Governanca de dados (Fase 6)
-- Implantar dicionario de dados, metricas e checks de qualidade.
-- Gate para avancar:
-  - conformidade das metricas no BI
-  - validacao de contratos `v1`
-  - monitoramento de qualidade de dados ativo
+### Etapa 3 - Camada analitica
+- consolidar `fato_aprendizagem`
+- consolidar `vw_desempenho_aprendizagem`
+- validar consultas agregadas por `ano`, `trimestre`, `ciclo_avaliativo`, `ano_escolar`, `componente`, `dominio` e `descritor`
 
-## Onda 3 - Seguranca incremental (Fase 7)
-- Implantar autenticacao e RBAC por etapas.
-- Gate para avancar:
-  - matriz de permissao validada
-  - auditoria de eventos sensiveis
-  - smoke tests de seguranca aprovados
+### Etapa 4 - BI
+- atualizar Metabase para a view oficial
+- manter conectores e endpoints legados de Power BI enquanto necessario
+- validar paridade SQL x BI
 
-## Onda 4 - Expansao de produto (Fase 8)
-- Implantar modulos de evolucao de produto com rollout controlado.
-- Gate para avancar:
-  - telemetria funcional ativa
-  - indicadores de adocao definidos
-  - plano de suporte operacional ajustado
+### Etapa 5 - Referencias pedagogicas
+- amarrar descritores, matriz, blueprint e curriculo municipal
+- preparar catalogo semantico de apoio ao diagnostico
 
-## Plano tecnico de release
+## Regras de seguranca
+- migrations sempre aditivas
+- sem quebra de endpoints atuais
+- sem remocao de tabelas existentes
+- sem dados individuais de alunos
 
-## Checklist pre-release
-- Suite de testes backend (`pytest`) 100% verde.
-- Smoke test dos endpoints:
-  - `/health`
-  - `/analytics/ima`
-  - `/bi/v1/hierarquia`
-  - `/bi/v1/indicadores-trimestrais`
-  - `/bi/v1/ima`
-- Validacao de migracoes/DDL (quando houver).
-- Atualizacao de documentacao operacional e de contrato.
-
-## Checklist pos-release
-- Health da API e conectividade com banco.
-- Validacao de consultas BI em homologacao/producao.
-- Monitoramento de erros HTTP 5xx e latencia.
-- Confirmacao de backup agendado e logs ativos.
-
-## Rollback
-- API:
-  - rollback de versao por artefato da release anterior.
-- Banco:
-  - se houver mudanca de schema, rollback com plano definido no release.
-- BI:
-  - manter contrato anterior ativo ate estabilizacao.
-
-## Responsabilidades (RACI simplificado)
-- Engenharia backend: implementacao, testes, deploy tecnico.
-- Responsavel BI: validacao de consumo e semantica.
-- Produto/gestao: aprovacao de aceite funcional.
-- Operacao: monitoramento e resposta a incidentes.
-
-## Indicadores de sucesso da implantacao
-- Taxa de sucesso de deploy.
-- Tempo medio de recuperacao (MTTR).
-- Erros 5xx apos release.
-- Tempo de atualizacao dos dashboards BI.
-
-## Cronograma sugerido (referencia)
-- Ciclo 1 (2-4 semanas): Fase 5.
-- Ciclo 2 (2-4 semanas): Fase 6.
-- Ciclo 3 (3-5 semanas): Fase 7.
-- Ciclo 4 (4-8 semanas): Fase 8.
-
-## Dependencias criticas
-- Ambiente de homologacao estavel.
-- Monitoramento minimo configurado.
-- Disponibilidade de validacao funcional/BI em cada onda.
+## Frentes de trabalho
+1. Infraestrutura tecnica (`API + banco + BI`)
+2. Camada analitica (`fato_aprendizagem`)
+3. Referencias pedagogicas (`matriz`, `blueprint`, `descritores`)

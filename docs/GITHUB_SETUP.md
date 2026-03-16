@@ -1,102 +1,58 @@
-# GitHub Setup e Fluxo de Versionamento
+# GitHub Setup
 
-Guia minimo para manter este projeto versionado localmente e publicado no GitHub.
+## Objetivo
+Documentar o fluxo de versionamento do projeto no Git e no GitHub.
 
-## Estado esperado
-- Repositorio Git inicializado localmente.
-- Branch principal: `main`.
-- Arquivos locais e segredos fora do versionamento via `.gitignore`.
+## Baseline oficial
+Toda mudanca relevante deve respeitar as referencias oficiais do projeto:
+- `README.md`
+- `SYSTEM_CONTEXT.md`
+- `docs/EDUCATIONAL_DATA_ARCHITECTURE.md`
+- `docs/MIGRATION_PLAN_EDUCATIONAL_ARCHITECTURE.md`
+- ADRs `007` a `011`
 
-## 1) Criar o repositorio no GitHub
-Crie um repositorio vazio no GitHub com um nome como:
-- `educacao-inteligente`
+## Regras praticas
+- preferir commits pequenos e logicos
+- nao misturar mudancas operacionais com refatoracao semantica sem necessidade
+- registrar decisoes de arquitetura em ADR ou documento tecnico antes de aplicar mudanca estrutural grande
+- manter compatibilidade com o MVP atual
 
-Recomendacao:
-- nao inicializar com `README`, `.gitignore` ou licenca no GitHub se este repositorio local ja tiver commit inicial.
-
-## 2) Conectar o remoto
-No terminal, na raiz do projeto:
-
+## Publicacao inicial
+Adicionar remoto:
 ```powershell
-git remote add origin https://github.com/SEU-USUARIO/educacao-inteligente.git
+git remote add origin https://github.com/SEU-USUARIO/SEU-REPO.git
+```
+
+Primeiro push:
+```powershell
 git push -u origin main
 ```
 
-Se preferir SSH:
-
-```powershell
-git remote add origin git@github.com:SEU-USUARIO/educacao-inteligente.git
-git push -u origin main
-```
-
-Alternativa com script do projeto:
-
-```powershell
-.\scripts\git_save.ps1 -Message "chore: first github push" -RemoteUrl https://github.com/SEU-USUARIO/educacao-inteligente.git
-```
-
-O script:
-- faz `git add .`;
-- cria o commit;
-- cadastra `origin` se ele ainda nao existir;
-- executa `push` na branch atual.
-
-## 3) Fluxo diario recomendado
-Verificar mudancas:
-
+## Fluxo recomendado
+Verificar estado:
 ```powershell
 git status
 ```
 
-Adicionar alteracoes:
+Salvar mudancas:
+```powershell
+.\scripts\git_save.ps1 -Message "docs: atualiza documentacao tecnica"
+```
 
+Ou manualmente:
 ```powershell
 git add .
-```
-
-Criar commit:
-
-```powershell
-git commit -m "descreva a alteracao"
-```
-
-Enviar ao GitHub:
-
-```powershell
+git commit -m "docs: atualiza documentacao tecnica"
 git push
 ```
 
-Alternativa simplificada:
+## Branches
+- manter `main` como linha principal estavel
+- usar branches `codex/...` para mudancas maiores quando necessario
 
-```powershell
-.\scripts\git_save.ps1 -Message "feat: descreva a alteracao"
-```
-
-## 4) Estrategia simples de branches
-- `main`: estado estavel do projeto.
-- `feat/...`: novas funcionalidades.
-- `fix/...`: correcoes.
-- `docs/...`: mudancas apenas de documentacao.
-
-Exemplo:
-
-```powershell
-git checkout -b feat/metabase-filtros
-```
-
-## 5) Regras praticas para este projeto
-- Nao versionar `.env`, ambientes virtuais, caches e backups SQL.
-- Pode versionar `dashboard/MVP_BI_v1.pbix`, mas ele sera tratado como binario.
-- Antes de push importante, rodar testes do backend:
-
-```powershell
-cd backend
-python -m pytest -q
-```
-
-## 6) Colaboracao
-Se outra pessoa for modificar o projeto:
-- clonar o repositorio;
-- seguir o `README.md` da raiz;
-- usar commits pequenos e descritivos;
-- evitar mudar contratos da API sem atualizar `docs/PHASE4_API_CONTRACT.md`.
+## O que registrar com mais rigor
+- migrations de banco
+- ADRs
+- contratos HTTP
+- contratos BI
+- artefatos de referencia pedagogica

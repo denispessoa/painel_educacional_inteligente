@@ -1,130 +1,55 @@
 # Scripts - Uso local
 
-## `setup.sh`
-Script simples para subir dependencias de infraestrutura via Docker Compose.
+## Objetivo
+Documentar os scripts do repositorio e a relacao deles com a arquitetura oficial do projeto.
 
-Conteudo atual:
-```bash
-docker compose up -d postgres api
-```
+## Baseline oficial
+- `README.md`
+- `SYSTEM_CONTEXT.md`
+- `docs/EDUCATIONAL_DATA_ARCHITECTURE.md`
+- `docs/MIGRATION_PLAN_EDUCATIONAL_ARCHITECTURE.md`
 
-## Como usar
-Em ambientes Unix/Linux:
-```bash
-chmod +x scripts/setup.sh
-./scripts/setup.sh
-```
+## Scripts principais
+### `setup.sh`
+Sobe a infraestrutura basica via Docker Compose.
 
-No Windows/PowerShell, preferir comando direto:
+Uso no PowerShell:
 ```powershell
 docker compose up -d postgres api
 ```
 
-## Pre-requisitos
-- Docker Desktop ativo
-- Docker Compose disponivel no PATH
-
-## Provisionamento Metabase (Fase 5.1)
 ### `provision_metabase_db.ps1`
-Cria/atualiza role e database de metadata do Metabase no PostgreSQL local.
+Cria ou atualiza o banco de metadata do Metabase.
 
-Uso padrao:
 ```powershell
 .\scripts\provision_metabase_db.ps1
 ```
 
-Com parametros customizados:
-```powershell
-.\scripts\provision_metabase_db.ps1 -MetabaseDbName metabase -MetabaseDbUser metabase -MetabaseDbPass "troque_esta_senha"
-```
-
-## Backup e restore (Fase 5)
-### `git_save.ps1`
-Automatiza `git add .`, `git commit` e `git push`.
-
-Uso padrao:
-```powershell
-.\scripts\git_save.ps1 -Message "docs: atualiza guia do metabase"
-```
-
-Primeira conexao com GitHub no mesmo comando:
-```powershell
-.\scripts\git_save.ps1 -Message "chore: primeiro push" -RemoteUrl https://github.com/SEU-USUARIO/educacao-inteligente.git
-```
-
-Validar sem executar:
-```powershell
-.\scripts\git_save.ps1 -Message "teste" -DryRun
-```
-
-Criar commit sem push:
-```powershell
-.\scripts\git_save.ps1 -Message "wip: ajustes locais" -SkipPush
-```
-
 ### `smoke_api.ps1`
-Executa uma validacao rapida da API e endpoints principais da stack local.
+Executa validacao rapida da API atual.
 
-Uso padrao:
 ```powershell
 .\scripts\smoke_api.ps1
 ```
 
-Com URL customizada:
-```powershell
-.\scripts\smoke_api.ps1 -BaseUrl http://127.0.0.1:8000
-```
+### `backup_postgres.ps1` e `restore_postgres.ps1`
+Backup e restore do banco `educacao`.
 
-### `backup_postgres.ps1`
-Gera backup SQL do banco `educacao` no container `postgres`.
+### `backup_metabase_db.ps1` e `restore_metabase_db.ps1`
+Backup e restore do metadata DB do Metabase.
 
-Uso padrao:
-```powershell
-.\scripts\backup_postgres.ps1
-```
+### `git_save.ps1`
+Automatiza `git add`, `git commit` e `git push`.
 
-Com caminho customizado:
-```powershell
-.\scripts\backup_postgres.ps1 -OutputFile .\export\educacao_backup_manual.sql
-```
+## Scripts de BI
+### `scripts/powerbi/`
+Conectores legados para `/bi/v1/*`.
 
-### `restore_postgres.ps1`
-Restaura um arquivo SQL no banco `educacao`.
+### `scripts/metabase/`
+SQLs de apoio ao dashboard atual do Metabase.
 
-Uso:
-```powershell
-.\scripts\restore_postgres.ps1 -InputFile .\export\educacao_backup_manual.sql
-```
-
-### `backup_metabase_db.ps1`
-Gera backup SQL do metadata DB do Metabase.
-
-Uso:
-```powershell
-.\scripts\backup_metabase_db.ps1
-```
-
-### `restore_metabase_db.ps1`
-Restaura backup SQL no metadata DB do Metabase.
-
-Uso:
-```powershell
-.\scripts\restore_metabase_db.ps1 -InputFile .\export\metabase_backup_YYYYMMDD_HHMMSS.sql
-```
-
-## Scripts Power BI
-- Pasta: `scripts/powerbi/`
-- Contem consultas `.pq` prontas para:
-  - `/bi/v1/hierarquia`
-  - `/bi/v1/indicadores-trimestrais`
-  - `/bi/v1/ima`
-- Guia de uso: `scripts/powerbi/README.md`
-- Status: legado temporario durante migracao para Metabase.
-
-## Scripts Metabase
-- Pasta: `scripts/metabase/`
-- Contem SQL base para o dashboard MVP:
-  - `kpi_cards.sql`
-  - `serie_trimestral.sql`
-  - `comparativo_municipio.sql`
-- Guia de uso: `scripts/metabase/README.md`
+## Regra de evolucao
+Quando a camada oficial `avaliacoes -> fato_aprendizagem -> vw_desempenho_aprendizagem` entrar, revisar os scripts em 3 frentes:
+1. infraestrutura tecnica
+2. camada analitica
+3. referencias pedagogicas

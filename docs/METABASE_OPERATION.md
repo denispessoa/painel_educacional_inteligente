@@ -1,39 +1,75 @@
-# Metabase - Operacao Local
+# Metabase Operation
 
-## Rotina basica
-Subir stack:
+## Objetivo
+Documentar a operacao diaria do Metabase no projeto durante a transicao Power BI -> Metabase OSS.
+
+## Baseline oficial
+- Metabase e a camada BI principal alvo do projeto
+- a fonte primaria de monitoramento e a avaliacao da rede
+- a camada analitica oficial de referencia e `fato_aprendizagem -> vw_desempenho_aprendizagem`
+
+## Estado atual de operacao
+- o dashboard MVP pode operar com views ja disponiveis no banco
+- Power BI permanece como fallback temporario
+- a nova camada analitica oficial ainda deve ser consolidada sem quebrar o MVP atual
+
+## Operacao diaria
+### Subir Metabase
 ```powershell
-docker compose up -d postgres metabase
+docker compose up -d metabase
 ```
 
-Garantir views:
+### Parar Metabase
 ```powershell
-Get-Content .\database\views\ima_view.sql | docker compose exec -T postgres psql -U postgres -d educacao
-Get-Content .\database\views\desempenho_componentes_view.sql | docker compose exec -T postgres psql -U postgres -d educacao
+docker compose stop metabase
 ```
 
-## Validacoes operacionais
-- `vw_desempenho_componentes` deve estar sincronizada no Metabase.
-- `vw_ima` deve permanecer disponivel apenas para comparacao legada.
-- dashboard principal esperado:
-  - `MVP - Desempenho por Componentes`
-
-## Logs
+### Ver logs
 ```powershell
 docker compose logs -f metabase
-docker compose logs -f postgres
 ```
 
-## Reinicio
-```powershell
-docker compose restart metabase
-```
+## Rotina recomendada
+1. subir `postgres`
+2. validar API e banco
+3. subir `metabase`
+4. sincronizar schema apos mudancas de banco
+5. validar dashboards principais
 
-## Quando a base mudar de contrato
-Se alterar schema, views ou seed no repositorio:
-```powershell
-Get-Content .\database\sql\migrate_component_metrics.sql | docker compose exec -T postgres psql -U postgres -d educacao
-Get-Content .\database\views\ima_view.sql | docker compose exec -T postgres psql -U postgres -d educacao
-Get-Content .\database\views\desempenho_componentes_view.sql | docker compose exec -T postgres psql -U postgres -d educacao
-Get-Content .\database\seeds\seed.sql | docker compose exec -T postgres psql -U postgres -d educacao
-```
+## Fontes atuais para dashboard
+- `vw_ima`
+- `vw_desempenho_componentes`
+- consultas SQL em `scripts/metabase/`
+
+## Fontes oficiais de evolucao
+- `avaliacoes`
+- `fato_aprendizagem`
+- `vw_desempenho_aprendizagem`
+
+## Validacoes operacionais
+- sem erro no carregamento do dashboard
+- filtros respondendo com numeros coerentes
+- comparacao SQL x Metabase validada no checklist
+
+## Backup e restore
+Usar scripts:
+- `scripts/backup_metabase_db.ps1`
+- `scripts/restore_metabase_db.ps1`
+
+## Troubleshooting
+### Dashboard vazio
+- verificar se o banco `educacao` esta acessivel
+- ressincronizar schema no Metabase
+- validar se a view consultada existe no Postgres
+
+### Filtros nao atualizam
+- executar `Re-scan field values now`
+- revisar se o card usa os parametros corretos
+- validar a consulta SQL fora do Metabase
+
+### Mudanca na arquitetura analitica
+Quando a camada oficial `vw_desempenho_aprendizagem` entrar, revisar:
+- colecoes
+- cards
+- filtros globais
+- checklist de paridade

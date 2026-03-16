@@ -1,142 +1,124 @@
-# Runbook Operacional (MVP)
+# Operations - Runbook local
 
-## Escopo
-Procedimentos tecnicos para operar o ambiente local do projeto ate a Fase 5, incluindo o modelo atual de desempenho por componente.
+## Baseline oficial
+Este runbook segue estas referencias como fonte de verdade:
+- `README.md`
+- `SYSTEM_CONTEXT.md`
+- `docs/EDUCATIONAL_DATA_ARCHITECTURE.md`
+- `docs/MIGRATION_PLAN_EDUCATIONAL_ARCHITECTURE.md`
+- `docs/architecture_decisions/ADR_007` a `ADR_011`
 
-## Checklist de pre-requisitos
-- Docker Desktop em execucao
+Arquitetura oficial de referencia:
+`Municipio -> Escola -> Turma -> Avaliacao -> Indicadores de aprendizagem`
+
+Camada analitica oficial de referencia:
+`Avaliacoes da Rede -> fato_aprendizagem -> vw_desempenho_aprendizagem -> Metabase`
+
+## Estado operacional atual
+- API atual opera com `municipios`, `escolas`, `turmas` e `indicadores_trimestrais`
+- endpoints BI de Fase 4 permanecem ativos para compatibilidade
+- Metabase esta em transicao paralela ao Power BI
+- a camada `avaliacoes -> fato_aprendizagem -> vw_desempenho_aprendizagem` deve ser implantada por migrations aditivas, sem quebrar o MVP atual
+
+## Pre-requisitos
+- Docker Desktop ativo
 - Python instalado e acessivel no terminal
-- Porta `5433` livre para Postgres local do projeto
-- Porta `3000` livre para Metabase local
-- Dependencias do backend instaladas em `backend/venv`
+- `backend/venv` configurado para desenvolvimento local
+- portas livres: `5433` para Postgres, `8000` para API e `3000` para Metabase
 
-## Subida padrao do ambiente
-
-### 1. Banco e API
-Na raiz do repositorio:
+## Subir stack containerizada
 ```powershell
 docker compose up -d postgres api
 ```
 
-Validar containers:
-```powershell
-docker compose ps
-```
-
-Smoke test da API:
+Validar a API:
 ```powershell
 .\scripts\smoke_api.ps1
 ```
 
-### 1.1 Migrar banco local para o modelo de componentes
-Se o volume do Postgres ja existia antes desta revisao:
-```powershell
-Get-Content .\database\sql\migrate_component_metrics.sql | docker compose exec -T postgres psql -U postgres -d educacao
-Get-Content .\database\views\ima_view.sql | docker compose exec -T postgres psql -U postgres -d educacao
-Get-Content .\database\views\desempenho_componentes_view.sql | docker compose exec -T postgres psql -U postgres -d educacao
-Get-Content .\database\seeds\seed.sql | docker compose exec -T postgres psql -U postgres -d educacao
-```
-
-### 1.2 Provisionar metadata do Metabase
+Subir Metabase quando necessario:
 ```powershell
 Copy-Item .env.example .env
 .\scripts\provision_metabase_db.ps1
-```
-
-### 1.3 Subir Metabase
-```powershell
 docker compose up -d metabase
 ```
 
-Acesso local:
-- API: `http://127.0.0.1:8000`
-- Metabase: `http://127.0.0.1:3000`
-
-## Rotina de desenvolvimento local
-Na pasta `backend`:
+## Desenvolvimento local com hot reload
 ```powershell
+docker compose up -d postgres
+docker compose stop api
+cd backend
 python -m venv venv
 .\venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 python -m uvicorn app.main:app --reload
 ```
 
-## Health checks
+Rodar testes:
+```powershell
+cd backend
+python -m pytest -q
+```
+
+## Validacoes rapidas
+Health e metricas:
 ```powershell
 curl http://127.0.0.1:8000/health
 curl http://127.0.0.1:8000/health/dependencies
 curl http://127.0.0.1:8000/metrics
 ```
 
-## Rotina de testes
-Na pasta `backend`:
+BI legado atual:
 ```powershell
-python -m pytest -q
+curl "http://127.0.0.1:8000/bi/v1/hierarquia"
+curl "http://127.0.0.1:8000/bi/v1/indicadores-trimestrais?ano=2026&trimestre=1"
+curl "http://127.0.0.1:8000/bi/v1/ima?group_by=municipio"
 ```
 
-## Validacao de endpoints principais
-Com a API em execucao:
-
+## Banco atual
+Aplicar views atuais de BI, quando necessario:
 ```powershell
-curl "http://127.0.0.1:8000/analytics/desempenho?group_by=municipio&ano=2026&trimestre=4"
-curl "http://127.0.0.1:8000/bi/v1/indicadores-componentes?ano=2026&trimestre=4"
-curl "http://127.0.0.1:8000/bi/v1/desempenho?group_by=municipio&ano=2026&trimestre=4"
-```
-
-Legado temporario:
-```powershell
-curl "http://127.0.0.1:8000/analytics/ima?group_by=municipio&ano=2026&trimestre=4"
-curl "http://127.0.0.1:8000/bi/v1/ima?group_by=municipio&ano=2026&trimestre=4"
-```
-
-## Validacao rapida no banco
-```powershell
-docker compose exec -T postgres psql -U postgres -d educacao -c "select count(*) from vw_desempenho_componentes;"
-docker compose exec -T postgres psql -U postgres -d educacao -c "select fonte_avaliacao, min(ano_escolar), max(ano_escolar), count(*) from vw_desempenho_componentes group by fonte_avaliacao order by fonte_avaliacao;"
-```
-
-## Validacao do Metabase
-- view principal nova: `vw_desempenho_componentes`
-- view legada: `vw_ima`
-- scripts de apoio: `scripts/metabase/`
-- checklist de paridade: `docs/METABASE_VALIDATION_CHECKLIST.md`
-
-## Reset completo de ambiente
-Atencao: remove dados locais do banco.
-
-```powershell
-docker compose down -v
-docker compose up -d postgres
 Get-Content .\database\views\ima_view.sql | docker compose exec -T postgres psql -U postgres -d educacao
 Get-Content .\database\views\desempenho_componentes_view.sql | docker compose exec -T postgres psql -U postgres -d educacao
-.\scripts\provision_metabase_db.ps1
-docker compose up -d api metabase
+```
+
+## Banco - proxima camada oficial
+A evolucao oficial do banco deve ocorrer na ordem abaixo:
+1. `avaliacoes`
+2. `avaliacoes.ciclo_avaliativo`
+3. `fato_aprendizagem`
+4. `vw_desempenho_aprendizagem`
+
+Essa sequencia deve ser aplicada de forma aditiva e com validacao de compatibilidade com endpoints e dashboards atuais.
+
+## Reset completo de ambiente
+Atencao: remove dados locais.
+```powershell
+docker compose down -v
+docker compose up -d postgres api
 ```
 
 ## Troubleshooting rapido
-
-### Banco com contrato antigo
-Reaplicar migracao e seed:
+### Docker parado
 ```powershell
-Get-Content .\database\sql\migrate_component_metrics.sql | docker compose exec -T postgres psql -U postgres -d educacao
-Get-Content .\database\seeds\seed.sql | docker compose exec -T postgres psql -U postgres -d educacao
+docker compose ps
+```
+Se falhar, abrir Docker Desktop e repetir o comando.
+
+### API nao sobe
+```powershell
+cd backend
+.\venv\Scripts\Activate.ps1
+python -m uvicorn app.main:app --reload
 ```
 
-### `uvicorn` ou `pytest` nao reconhecidos
+### Testes falham
 ```powershell
-python -m uvicorn app.main:app --reload
+cd backend
 python -m pytest -q
 ```
 
-### Docker daemon indisponivel
-1. Abrir Docker Desktop.
-2. Aguardar engine iniciar.
-3. Reexecutar `docker compose up -d postgres api`.
-
-## Status atual
-- `analytics/desempenho` e `bi/v1/desempenho` ativos
-- `vw_desempenho_componentes` criada para a camada BI principal
-- `IMA` mantido apenas como legado temporario
-- seed demo cobre `1o-9o ano` com:
-  - `CNCA` para `1o-5o`
-  - `MEC Anos Finais BNCC` para `6o-9o`
+### Metabase nao conecta
+- confirmar se `postgres` esta rodando
+- reprovisionar metadata DB com `scripts/provision_metabase_db.ps1`
+- reiniciar o container `metabase`
