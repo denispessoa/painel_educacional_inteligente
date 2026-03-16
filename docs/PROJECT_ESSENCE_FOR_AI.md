@@ -27,6 +27,9 @@ O projeto passou a manter um documento-base de convergencia entre avaliacao exte
 
 Esse artefato existe para preparar adequacao futura a diferentes redes sem improvisar equivalencias entre descritores, habilidades e curriculo local.
 
+Trilha futura ja registrada:
+- `fluencia em leitura` como projeto avaliativo proprio, inicialmente ancorado no bloco `CNCA/CAEd` de `2o-5o ano`
+
 ## 4) O que ja foi entregue
 - Fase 1: CRUD de `municipios`, `escolas`, `turmas`.
 - Fase 2: `indicadores-trimestrais`.
@@ -88,9 +91,11 @@ Esse artefato existe para preparar adequacao futura a diferentes redes sem impro
 - `IMA` ainda existe e pode induzir leitura errada se continuar em destaque no BI.
 - Comparacoes entre anos escolares diferentes exigem contexto de etapa/fonte.
 - `escrita` demanda convergencia curricular mediada da rede, nao apenas equivalencia automatica com descritores externos.
+- `fluencia` ainda nao possui contrato de dados proprio no projeto e nao deve ser misturada com os percentuais atuais de leitura.
 
 ## 9) Proximos passos naturais
 1. Finalizar a convergencia BNCC/rede com a equipe pedagogica quando a matriz curricular municipal estiver versionada.
 2. Concluir o dashboard do Metabase com foco em componentes.
 3. Adicionar catalogo de metricas e dicionario de dados.
-4. Evoluir governanca e qualidade de dados.
+4. Estruturar o projeto futuro de `fluencia em leitura` com contrato proprio.
+5. Evoluir governanca e qualidade de dados.

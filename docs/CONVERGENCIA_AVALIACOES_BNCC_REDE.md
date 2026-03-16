@@ -30,6 +30,25 @@ A convergencia pode ocorrer em tres niveis:
 - `6o-9o ano`: usar `MEC Anos Finais BNCC` como referencia operacional principal
 - `Saeb`: usar como referencia complementar de comparabilidade, especialmente para `2o`, `5o` e `9o`
 - `escrita`: tratar como caso especial, porque nem sempre a matriz traz o codigo BNCC explicitamente no mesmo nivel de granularidade de `leitura` e `matematica`
+- `fluencia`: tratar como trilha avaliativa futura, separada do modelo atual de componentes
+
+## Projeto previsto - Fluencia em leitura
+- `fluencia` passa a ficar registrada como avaliacao prevista para evolucao do projeto
+- base documental atual:
+  - `CNCA/CAEd` com bloco de `fluencia em leitura`
+  - cobertura identificada nos documentos atuais: `2o-5o ano`
+- status atual:
+  - nao implementada no schema
+  - nao implementada na API
+  - nao implementada no BI
+- orientacao:
+  - tratar `fluencia` como projeto proprio de avaliacao
+  - nao misturar `fluencia` com `percentual no esperado` de leitura no modelo atual
+  - quando evoluir, criar contrato proprio com:
+    - `tipo_avaliacao = fluencia`
+    - metrica especifica
+    - janela de aplicacao
+    - regra de interpretacao separada de leitura/escrita/matematica
 
 ## Tabela 1 - Estrutura-base de convergencia por etapa e componente
 | Etapa | Componente | Fonte principal | Tipo de ancoragem BNCC | Papel do Saeb | Uso recomendado na rede |
@@ -37,6 +56,7 @@ A convergencia pode ocorrer em tres niveis:
 | 1o-5o | Leitura | CNCA/CAEd | Direta em boa parte da matriz | Complementar | alinhar descritor avaliativo a habilidade BNCC e objeto curricular da rede |
 | 1o-5o | Escrita | CNCA/CAEd | Mediada em boa parte da matriz | Complementar/limitado | alinhar genero/tarefa de producao a expectativa curricular da rede |
 | 1o-5o | Matematica | CNCA/CAEd | Direta em boa parte da matriz | Complementar | alinhar unidade tematica, habilidade BNCC e progressao da rede |
+| 2o-5o | Fluencia em leitura | CNCA/CAEd | Sem ancoragem BNCC explicita por codigo no quadro de fluencia | Sem papel central | tratar como trilha complementar de avaliacao, com governanca propria |
 | 6o-9o | Leitura | MEC Anos Finais BNCC | Direta na matriz | Complementar | alinhar habilidade avaliativa a eixo e objeto curricular da rede |
 | 6o-9o | Escrita | MEC Anos Finais BNCC | Mediada na matriz de escrita | Complementar/limitado | alinhar tarefa de escrita a genero, finalidade e criterio da rede |
 | 6o-9o | Matematica | MEC Anos Finais BNCC | Direta na matriz | Complementar | alinhar habilidade avaliativa a objeto matematico e expectativa da rede |
@@ -49,6 +69,8 @@ A convergencia pode ocorrer em tres niveis:
 | 1o ano | Escrita | CNCA/CAEd | `1EF02_E` | Escrever palavras, com correspondencias regulares diretas, a partir de uma imagem | Nao explicita no quadro de escrita | Mediada | Preencher com habilidade da matriz da rede ligada a escrita alfabetica | exige definicao curricular local do nivel de dominio esperado |
 | 1o ano | Matematica | CNCA/CAEd | `1EF04_M` | Utilizar adicao entre numeros naturais envolvendo juntar ou acrescentar | `EF01MA08` | Direta | Preencher | ancora bem a progressao inicial de numero e operacao |
 | 2o ano | Leitura | CNCA/CAEd | `2EF08_P` | Localizar informacoes explicitas em textos, recuperadas por parafrase | `EF15LP03` | Direta | Preencher | util para calibrar progressao entre leitura literal e inferencial |
+| 2o ano | Fluencia em leitura | CNCA/CAEd | `D001_D` | Ler palavras oralmente | Nao explicita no quadro de fluencia | Mediada | Preencher com expectativa da rede para fluencia/leitura oral | registrar separadamente de leitura de compreensao |
+| 2o ano | Fluencia em leitura | CNCA/CAEd | `D003_D` | Ler textos oralmente | Nao explicita no quadro de fluencia | Mediada | Preencher | exige futura definicao de metrica propria da rede |
 | 2o ano | Escrita | CNCA/CAEd | `2EF04_E` | Produzir um bilhete a partir de uma dada situacao | Nao explicita no quadro de escrita | Mediada | Preencher com genero e expectativa da rede | a convergencia deve considerar genero, finalidade e adequacao ao contexto |
 | 2o ano | Matematica | Saeb BNCC 2018 | `2N2.1` | Resolver problemas de adicao ou subtracao com numeros naturais de ate 3 ordens | Matriz Saeb BNCC 2018 - Numeros | Direta | Preencher | funciona como referencia complementar de progressao para o 2o ano |
 | 2o ano | Leitura | Saeb BNCC 2018 | Sem codigo de descritor legacy | Localizar informacoes explicitas em textos | Matriz Saeb BNCC 2018 - Leitura | Complementar | Preencher | ajuda a aproximar CNCA e referencia nacional do 2o ano |
@@ -72,6 +94,7 @@ A convergencia pode ocorrer em tres niveis:
 | --- | --- | --- |
 | Escrita no CNCA | o quadro de escrita nao explicita codigo BNCC na mesma forma de leitura e matematica | criar rubrica interna da rede por genero, finalidade, nivel de autonomia e convencoes da escrita |
 | Escrita nos anos finais | a matriz traz tarefa de producao, mas nao explicita a correspondencia BNCC por codigo no quadro | cruzar genero solicitado, finalidade comunicativa e criterio de correcao com a matriz curricular da rede |
+| Fluencia em leitura no CNCA | o bloco de fluencia funciona como trilha propria de leitura oral e nao deve ser confundido com compreensao leitora | criar projeto proprio de fluencia, com metrica, rubrica e periodicidade separadas |
 | Saeb base 2001 em Lingua Portuguesa | descritores historicos focam leitura e comparabilidade, nao uma matriz de escrita operacional | usar como referencia complementar, nao como unica ancora para escrita |
 | Matriz curricular municipal ainda nao versionada no repo | sem isso nao ha convergencia final com o curriculo local | quando a rede estiver pronta, preencher a coluna `Campo para matriz da rede` com codigo, expectativa e bimestre/trimestre |
 
@@ -89,5 +112,6 @@ A convergencia pode ocorrer em tres niveis:
 ## Limites assumidos neste documento
 - este documento e uma base de convergencia, nao uma rubrica completa de correcao
 - `escrita` exige trabalho pedagogico adicional da rede para chegar a uma equivalencia curricular robusta
+- `fluencia` esta apenas registrada como projeto futuro e nao compoe o modelo operacional atual
 - `Saeb` continua importante para comparabilidade, mas nao substitui as fontes operacionais `CNCA` e `MEC Anos Finais BNCC` no modelo atual do projeto
 

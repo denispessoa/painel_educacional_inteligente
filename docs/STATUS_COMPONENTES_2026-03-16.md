@@ -57,3 +57,13 @@ Antes de executar esse proximo passo, o projeto vai consolidar a convergencia en
 
 Documento-base dessa etapa:
 - `docs/CONVERGENCIA_AVALIACOES_BNCC_REDE.md`
+
+## Projeto futuro ja registrado
+- `fluencia em leitura` passa a ficar registrada como trilha avaliativa futura
+- base documental atual identificada:
+  - `CNCA/CAEd`
+  - cobertura `2o-5o ano`
+- status:
+  - fora do schema atual
+  - fora da API atual
+  - fora do dashboard atual
