@@ -19,14 +19,13 @@ Use este arquivo como contexto base para pedir insights tecnicos, de produto e d
   - `percentual no esperado - matematica`
 - criterio de atingimento:
   - `Proficiente + Avancado`
-- `IMA` permanece apenas como artefato legado de compatibilidade.
+- `IMA` e legado temporario.
 
-## 3) Escopo e restricoes obrigatorias
-- Nao implementar RBAC completo no MVP.
-- Nao coletar dados individuais de alunos.
-- Sem frontend proprio no MVP.
-- Endpoints BI `v1` sao read-only.
-- Seguir ordem de fases definida em `CODEX_TASKS.md`.
+## 3) Ativo estrategico novo
+O projeto passou a manter um documento-base de convergencia entre avaliacao externa, BNCC e futura matriz curricular da rede:
+- `docs/CONVERGENCIA_AVALIACOES_BNCC_REDE.md`
+
+Esse artefato existe para preparar adequacao futura a diferentes redes sem improvisar equivalencias entre descritores, habilidades e curriculo local.
 
 ## 4) O que ja foi entregue
 - Fase 1: CRUD de `municipios`, `escolas`, `turmas`.
@@ -82,42 +81,16 @@ Use este arquivo como contexto base para pedir insights tecnicos, de produto e d
   - `1o-9o ano`
   - `CNCA` e `MEC Anos Finais BNCC`
 - Metabase OSS local segue como camada BI principal em evolucao.
+- Proximo passo natural ja registrado:
+  - migrar a dashboard do Metabase para o modelo de componentes.
 
 ## 8) Riscos atuais
 - `IMA` ainda existe e pode induzir leitura errada se continuar em destaque no BI.
 - Comparacoes entre anos escolares diferentes exigem contexto de etapa/fonte.
-- A migracao visual do dashboard do Metabase ainda precisa ser concluida no ambiente da instancia.
+- `escrita` demanda convergencia curricular mediada da rede, nao apenas equivalencia automatica com descritores externos.
 
 ## 9) Proximos passos naturais
-1. Concluir o dashboard do Metabase com foco em componentes.
-2. Adicionar catalogo de metricas e dicionario de dados.
-3. Evoluir governanca e qualidade de dados.
-4. Planejar deploy de homologacao/producao.
-
-## 10) Prompt base
-```text
-Voce esta apoiando a evolucao de uma plataforma municipal de inteligencia educacional.
-
-Contexto:
-- Stack: FastAPI + PostgreSQL + Metabase OSS.
-- Hierarquia: Municipio -> Escola -> Turma -> Indicadores.
-- Sem dados individuais de alunos.
-- Base semantica atual:
-  - CNCA para 1o-5o ano
-  - MEC Anos Finais BNCC para 6o-9o ano
-  - Saeb como referencia complementar
-- Metricas principais:
-  - percentual no esperado em leitura
-  - percentual no esperado em escrita
-  - percentual no esperado em matematica
-- IMA e legado temporario.
-- Endpoints BI principais: /bi/v1/indicadores-componentes e /bi/v1/desempenho.
-
-Objetivo deste pedido:
-[descreva aqui o tipo de insight que voce quer]
-
-Restricoes:
-- Nao quebrar contratos existentes sem estrategia de transicao.
-- Nao adicionar dados individuais.
-- Priorizar baixo custo operacional e simplicidade de manutencao.
-```
+1. Finalizar a convergencia BNCC/rede com a equipe pedagogica quando a matriz curricular municipal estiver versionada.
+2. Concluir o dashboard do Metabase com foco em componentes.
+3. Adicionar catalogo de metricas e dicionario de dados.
+4. Evoluir governanca e qualidade de dados.

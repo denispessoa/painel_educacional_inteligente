@@ -4,11 +4,11 @@ Esta pasta guarda copias de documentos oficiais usados como base normativa e ped
 
 ## Estrutura
 - `saeb/`
-  - matrizes e escalas oficiais do Saeb usadas como referencia para `5o` e `9o` ano e para a leitura da evolucao de matriz
+  - matrizes e escalas oficiais do Saeb usadas como referencia complementar de comparabilidade
 - `cnca/`
-  - documentos do `Compromisso Nacional Crianca Alfabetizada` usados como referencia para o `2o` ano
+  - documentos do `Compromisso Nacional Crianca Alfabetizada` e da Avaliacao Continua da Aprendizagem usados como referencia operacional de `1o` a `9o` ano
 
 ## Regra de uso
 - estes arquivos servem como base documental do projeto;
-- nao substituem o contrato operacional atual do `IMA medio`;
+- nao substituem a convergencia curricular da rede municipal;
 - qualquer evolucao de metrica baseada em proficiencia deve citar explicitamente o documento de origem e a versao da matriz/escala.

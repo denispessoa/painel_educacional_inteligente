@@ -3,8 +3,9 @@
 Arquivos versionados nesta pasta:
 - `CNCAGuiadaAvaliaoContnua.pdf`
 - `MEC_2026_CNCA_Av_Cont_Apren_Matriz_Ref.pdf`
+- `MEC_2025-Matriz_Anos_Finais.pdf`
 
 ## Uso recomendado no projeto
-- base oficial para o `2o` ano do Ensino Fundamental;
-- referencia para leitura de `leitura`, `escrita` e futura extensao de `matematica` no contexto de alfabetizacao;
-- apoio para diferenciar `indicador operacional interno` de `indicador calibrado por avaliacao externa`.
+- `1o-5o ano`: base operacional principal do modelo por componentes
+- `6o-9o ano`: matriz de referencia dos anos finais alinhada a BNCC
+- apoio para convergencia entre avaliacao externa, BNCC e matriz curricular da rede

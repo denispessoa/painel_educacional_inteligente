@@ -3,10 +3,12 @@
 ## Documentos de contexto
 - `11_MINI_ROADMAP_30_DAYS.md`
 - `ARCHITECTURE_UPDATE_BI.md`
+- `STATUS_COMPONENTES_2026-03-16.md`
+  - checkpoint do estado atual do desenvolvimento e proximo passo natural registrado
+- `CONVERGENCIA_AVALIACOES_BNCC_REDE.md`
+  - documento-base de convergencia entre CNCA, MEC anos finais, Saeb, BNCC e futura matriz curricular da rede
 - `IMA_REFERENCE_BASE.md`
-  - base oficial e semantica do modelo por componente (`CNCA 1o-5o`, `MEC 6o-9o`, `Saeb` complementar)
 - `references/`
-  - copias versionadas de referencias oficiais `SAEB` e `CNCA`
 - `adr/ADR-004-mvp-priority.md`
 - `adr/ADR-005-commercial-model-post-mvp.md`
 - `12_ROADMAP_POS_MVP.md`
@@ -15,15 +17,12 @@
 
 ## Documentos operacionais e de contrato
 - `OPERATIONS.md`
-  - runbook atualizado para o modelo de componentes
 - `INCIDENT_RUNBOOK.md`
 - `METABASE_SETUP.md`
 - `METABASE_OPERATION.md`
 - `METABASE_VALIDATION_CHECKLIST.md`
 - `PHASE4_API_CONTRACT.md`
-  - contrato legado da camada BI v1 centrada em `IMA`
 - `POWERBI_DESKTOP_CONNECTIONS.md`
-  - guia legado temporario
 
 ## Referencias complementares fora desta pasta
 - `../README.md`
