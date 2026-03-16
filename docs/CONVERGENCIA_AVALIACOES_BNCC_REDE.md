@@ -24,6 +24,8 @@ A convergencia pode ocorrer em tres niveis:
 - `docs/references/saeb/matriz_matematica-base-saeb-2001.pdf`
 - `docs/references/saeb/matriz-de-referencia-de-linguagens_BNCC-2018.pdf`
 - `docs/references/saeb/matriz-de-referencia-de-matematica_BNCC-2018.pdf`
+- `docs/references/redes/mendes/`
+  - base curricular municipal atual versionada no projeto, preparada para futura substituicao por outra rede em `docs/references/redes/<rede>/`
 
 ## Regras para uso no projeto
 - `1o-5o ano`: usar `CNCA` como referencia operacional principal
@@ -96,10 +98,10 @@ A convergencia pode ocorrer em tres niveis:
 | Escrita nos anos finais | a matriz traz tarefa de producao, mas nao explicita a correspondencia BNCC por codigo no quadro | cruzar genero solicitado, finalidade comunicativa e criterio de correcao com a matriz curricular da rede |
 | Fluencia em leitura no CNCA | o bloco de fluencia funciona como trilha propria de leitura oral e nao deve ser confundido com compreensao leitora | criar projeto proprio de fluencia, com metrica, rubrica e periodicidade separadas |
 | Saeb base 2001 em Lingua Portuguesa | descritores historicos focam leitura e comparabilidade, nao uma matriz de escrita operacional | usar como referencia complementar, nao como unica ancora para escrita |
-| Matriz curricular municipal ainda nao versionada no repo | sem isso nao ha convergencia final com o curriculo local | quando a rede estiver pronta, preencher a coluna `Campo para matriz da rede` com codigo, expectativa e bimestre/trimestre |
+| Matriz curricular municipal versionada, mas ainda nao cruzada linha a linha | a documentacao-base da rede agora existe no repo, mas o preenchimento da convergencia ainda depende de trabalho pedagogico | preencher a coluna `Campo para matriz da rede` usando `docs/references/redes/mendes/` como fonte curricular oficial local |
 
 ## Como usar esta base na rede municipal
-1. Definir a versao oficial da matriz curricular da rede a ser usada.
+1. Definir a pasta de rede oficial em `docs/references/redes/<rede>/`.
 2. Copiar a `Tabela 2` para um artefato operacional da rede.
 3. Preencher a coluna `Campo para matriz da rede` com:
    - codigo da habilidade local

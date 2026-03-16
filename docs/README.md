@@ -9,6 +9,8 @@
   - documento-base de convergencia entre CNCA, MEC anos finais, Saeb, BNCC e futura matriz curricular da rede
 - `IMA_REFERENCE_BASE.md`
 - `references/`
+- `references/redes/`
+  - matrizes curriculares versionadas por rede, com a rede `Mendes` registrada como base municipal atual
 - `adr/ADR-004-mvp-priority.md`
 - `adr/ADR-005-commercial-model-post-mvp.md`
 - `12_ROADMAP_POS_MVP.md`

@@ -25,6 +25,9 @@ Use este arquivo como contexto base para pedir insights tecnicos, de produto e d
 O projeto passou a manter um documento-base de convergencia entre avaliacao externa, BNCC e futura matriz curricular da rede:
 - `docs/CONVERGENCIA_AVALIACOES_BNCC_REDE.md`
 
+O projeto tambem passou a versionar a matriz curricular da rede ativa em estrutura trocavel:
+- `docs/references/redes/mendes/`
+
 Esse artefato existe para preparar adequacao futura a diferentes redes sem improvisar equivalencias entre descritores, habilidades e curriculo local.
 
 Trilha futura ja registrada:
@@ -94,7 +97,7 @@ Trilha futura ja registrada:
 - `fluencia` ainda nao possui contrato de dados proprio no projeto e nao deve ser misturada com os percentuais atuais de leitura.
 
 ## 9) Proximos passos naturais
-1. Finalizar a convergencia BNCC/rede com a equipe pedagogica quando a matriz curricular municipal estiver versionada.
+1. Finalizar a convergencia BNCC/rede com a equipe pedagogica a partir da matriz curricular municipal ja versionada em `docs/references/redes/mendes/`.
 2. Concluir o dashboard do Metabase com foco em componentes.
 3. Adicionar catalogo de metricas e dicionario de dados.
 4. Estruturar o projeto futuro de `fluencia em leitura` com contrato proprio.
