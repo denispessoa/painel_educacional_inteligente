@@ -12,7 +12,7 @@ Documentar como o banco PostgreSQL do MVP e inicializado e mantido localmente.
     - `turmas`
     - `indicadores_trimestrais`
 - `seeds/seed.sql`
-  - carga inicial minima de dados
+  - carga demo idempotente com 2025 completo e 2026 parcial
 - `views/ima_view.sql`
   - view `vw_ima` com dados denormalizados para consumo analitico/BI
 - `sql/provision_metabase_metadata.sql`
@@ -64,6 +64,11 @@ docker compose exec postgres psql -U postgres -d educacao -c "\dt"
 Contar municipios seed:
 ```powershell
 docker compose exec postgres psql -U postgres -d educacao -c "select count(*) from municipios;"
+```
+
+Consultar anos/trimestres disponiveis na view:
+```powershell
+docker compose exec postgres psql -U postgres -d educacao -c "select ano, trimestre, count(*) from vw_ima group by ano, trimestre order by ano, trimestre;"
 ```
 
 ## Regras de integridade relevantes

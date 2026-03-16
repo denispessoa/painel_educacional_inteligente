@@ -56,6 +56,9 @@ No dashboard `MVP - Alfabetizacao e IMA`, validar:
 
 ## 4) Cenarios obrigatorios
 - [ ] Sem filtros (visao global).
+- [ ] Filtro `ano=2025`.
+- [ ] Filtro `ano=2025, trimestre=1`.
+- [ ] Filtro `ano=2025, trimestre=4`.
 - [ ] Filtro `ano=2026, trimestre=1`.
 - [ ] Filtro `ano=2026, trimestre=2` (se houver dados no banco).
 - [ ] Filtro por municipio especifico (ex.: `Cidade BI`, se existir).
