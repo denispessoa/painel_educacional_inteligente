@@ -7,7 +7,7 @@ Consultas SQL de referencia para montar o dashboard:
 - `kpi_cards.sql`
   - consultas dos cards de KPI
 - `serie_trimestral.sql`
-  - serie temporal por ano/trimestre
+  - serie temporal com coluna `periodo` pronta para o eixo X
 - `comparativo_municipio.sql`
   - comparativo por municipio
 
@@ -27,3 +27,7 @@ Os SQLs usam parametros opcionais do Metabase:
 - `{{municipio_nome}}` (texto)
 
 No editor SQL, configure os 3 parametros para cada pergunta antes de salvar.
+
+## Observacao importante para o grafico de linha
+No Metabase, o grafico usa apenas um campo no eixo X.
+Para o card `Serie Trimestral IMA`, use a coluna `periodo` da query (`2025 T1`, `2025 T2` etc.) como eixo X.

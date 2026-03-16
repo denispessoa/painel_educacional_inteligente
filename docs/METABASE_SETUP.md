@@ -88,7 +88,7 @@ Cards/KPIs:
 
 Visuais minimos:
 - Cards KPI
-- Serie temporal por trimestre
+- Serie temporal por trimestre usando a coluna `periodo` da query
 - Comparativo por municipio
 
 ## 8) Validacao inicial rapida
