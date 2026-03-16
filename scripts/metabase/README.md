@@ -1,33 +1,45 @@
-# Metabase - Queries base do dashboard MVP
+# Metabase - Queries base do dashboard principal
 
-Consultas SQL de referencia para montar o dashboard:
+Consultas SQL de referencia para montar o dashboard principal:
+- `MVP - Desempenho por Componentes`
+
+Dashboard legado temporario:
 - `MVP - Alfabetizacao e IMA`
+
+## Fonte principal
+- `vw_desempenho_componentes`
+
+## Fonte legada
+- `vw_ima`
 
 ## Arquivos
 - `kpi_cards.sql`
-  - consultas dos cards de KPI
+  - consultas dos cards de KPI do dashboard principal
 - `serie_trimestral.sql`
-  - serie temporal com coluna `periodo` pronta para o eixo X
+  - serie temporal por componente
 - `comparativo_municipio.sql`
-  - comparativo por municipio
+  - comparativo por municipio por componente
 
 ## Uso sugerido
-1. No Metabase, criar uma "Question" SQL para cada consulta.
+1. No Metabase, criar uma `Question` SQL para cada consulta.
 2. Salvar na colecao `MVP Educacao`.
-3. Adicionar as perguntas no dashboard `MVP - Alfabetizacao e IMA`.
+3. Adicionar as perguntas no dashboard `MVP - Desempenho por Componentes`.
 4. Configurar filtros globais do dashboard:
    - `ano`
    - `trimestre`
+   - `ano_escolar`
+   - `fonte_avaliacao`
    - `municipio_nome`
 
 ## Parametros dos SQLs
-Os SQLs usam parametros opcionais do Metabase:
 - `{{ano}}` (numero)
 - `{{trimestre}}` (numero)
+- `{{ano_escolar}}` (numero)
+- `{{fonte_avaliacao}}` (texto)
 - `{{municipio_nome}}` (texto)
 
-No editor SQL, configure os 3 parametros para cada pergunta antes de salvar.
+## Observacao sobre o eixo X
+No card `Serie Trimestral por Componentes`, use a coluna `periodo` (`2025 T1`, `2025 T2` etc.) no eixo X.
 
-## Observacao importante para o grafico de linha
-No Metabase, o grafico usa apenas um campo no eixo X.
-Para o card `Serie Trimestral IMA`, use a coluna `periodo` da query (`2025 T1`, `2025 T2` etc.) como eixo X.
+## Observacao sobre o IMA
+`IMA` ainda pode ser mantido em cards secundarios usando `vw_ima`, mas nao deve ser o destaque do dashboard principal.

@@ -1,39 +1,32 @@
 # Metabase Setup Local (Fase 5.1)
 
-Guia para subir Metabase OSS localmente em paralelo ao Power BI.
+Guia para operar o Metabase OSS localmente com o modelo atual de desempenho por componente.
 
 ## Objetivo
-- Operar BI sem custo de licenca.
-- Manter compatibilidade com a API e banco atuais.
-- Validar dashboards no Metabase antes de cutover.
+- operar BI sem custo de licenca
+- usar `vw_desempenho_componentes` como fonte principal
+- manter `vw_ima` apenas como fonte legada temporaria
 
 ## Pre-requisitos
-- Docker Desktop ativo.
-- Projeto com `postgres` funcional em `docker compose`.
-- PowerShell (Windows).
+- Docker Desktop ativo
+- Postgres do projeto funcional em `docker compose`
+- PowerShell (Windows)
 
 ## 1) Configurar variaveis do Metabase
-Copie o arquivo de exemplo e ajuste os valores:
-
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Campos esperados no `.env`:
-- `METABASE_DB_NAME` (default: `metabase`)
-- `METABASE_DB_USER` (default: `metabase`)
-- `METABASE_DB_PASS` (trocar em ambientes reais)
-- `METABASE_ENCRYPTION_SECRET_KEY` (trocar em ambientes reais)
-
-## 2) Subir Postgres e provisionar metadata do Metabase
+## 2) Subir Postgres e provisionar metadata
 ```powershell
 docker compose up -d postgres
 .\scripts\provision_metabase_db.ps1
 ```
 
-## 3) Garantir view analitica para dashboards
+## 3) Garantir views analiticas
 ```powershell
 Get-Content .\database\views\ima_view.sql | docker compose exec -T postgres psql -U postgres -d educacao
+Get-Content .\database\views\desempenho_componentes_view.sql | docker compose exec -T postgres psql -U postgres -d educacao
 ```
 
 ## 4) Subir Metabase
@@ -42,23 +35,22 @@ docker compose up -d metabase
 docker compose ps
 ```
 
-Esperado:
-- `postgres` e `metabase` em `running`.
-- Metabase acessivel em `http://127.0.0.1:3000`.
-
-## 5) Onboarding inicial no navegador
+## 5) Onboarding inicial
 1. Acessar `http://127.0.0.1:3000`.
 2. Criar usuario admin local.
-3. Em "Add your data", configurar PostgreSQL com:
+3. Adicionar PostgreSQL com:
    - Host: `postgres`
    - Port: `5432`
    - Database: `educacao`
    - Username: `postgres`
    - Password: `postgres`
-4. Habilitar sync/scan (padrao recomendado).
+4. Habilitar sync/scan.
 
-## 6) Modelagem minima recomendada
-Base principal:
+## 6) Modelagem recomendada
+Fonte principal:
+- `vw_desempenho_componentes`
+
+Fonte legada:
 - `vw_ima`
 
 Dimensoes de apoio:
@@ -67,54 +59,39 @@ Dimensoes de apoio:
 - `turmas`
 - `indicadores_trimestrais`
 
-Padrao de filtros no Metabase:
+Filtros recomendados no dashboard principal:
 - `ano`
 - `trimestre`
+- `ano_escolar`
+- `fonte_avaliacao`
 - `municipio_nome`
 
-## 7) Dashboard MVP equivalente
+## 7) Dashboard principal recomendado
 Colecao:
 - `MVP Educacao`
 
 Dashboard:
-- `MVP - Alfabetizacao e IMA`
+- `MVP - Desempenho por Componentes`
 
-Cards/KPIs:
-- `Qtd Linhas` -> `COUNT(*)` em `vw_ima`
-- `Total Alunos` -> `SUM(total_alunos)`
-- `Media Leitura` -> `AVG(percentual_leitura)`
-- `Media Escrita` -> `AVG(percentual_escrita)`
-- `IMA Medio` -> `AVG(ima)`
+KPIs:
+- `Qtd Linhas`
+- `Total Alunos`
+- `Percentual no Esperado - Leitura`
+- `Percentual no Esperado - Escrita`
+- `Percentual no Esperado - Matematica`
 
-Visuais minimos:
-- Cards KPI
-- Serie temporal por trimestre usando a coluna `periodo` da query
-- Comparativo por municipio
+Visuais:
+- serie temporal por componente
+- comparativo por municipio por componente
+
+SQLs de referencia:
+- `scripts/metabase/kpi_cards.sql`
+- `scripts/metabase/serie_trimestral.sql`
+- `scripts/metabase/comparativo_municipio.sql`
 
 ## 8) Validacao inicial rapida
 1. Metabase abre sem erro.
 2. Banco `educacao` conectado.
-3. `vw_ima` visivel no Data Model.
-4. Dashboard MVP criado e com dados.
-
-## Troubleshooting rapido
-
-### Metabase nao sobe
-```powershell
-docker compose logs -f metabase
-```
-
-Se erro de conexao no metadata DB:
-1. Reexecutar `.\scripts\provision_metabase_db.ps1`.
-2. Reiniciar Metabase:
-```powershell
-docker compose restart metabase
-```
-
-### Banco `educacao` nao aparece no Metabase
-1. Verificar `postgres` em running:
-```powershell
-docker compose ps
-```
-2. Validar credenciais informadas no onboarding.
-3. Forcar sync no admin do Metabase.
+3. `vw_desempenho_componentes` visivel no data model.
+4. Dashboard principal criado e com dados.
+5. `vw_ima` permanece disponivel se precisar comparar legado.

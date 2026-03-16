@@ -26,7 +26,7 @@ def create_indicador_trimestral(
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="ja existe indicador para esta turma, ano e trimestre",
+            detail="ja existe indicador para esta turma, ano, trimestre, ano_escolar e fonte_avaliacao",
         )
 
 
@@ -35,6 +35,8 @@ def list_indicadores_trimestrais(
     turma_id: UUID | None = Query(default=None),
     ano: int | None = Query(default=None, ge=2000, le=2100),
     trimestre: int | None = Query(default=None, ge=1, le=4),
+    ano_escolar: int | None = Query(default=None, ge=1, le=9),
+    fonte_avaliacao: schemas.FonteAvaliacao | None = Query(default=None),
     db: Session = Depends(get_db),
 ) -> list[schemas.IndicadorTrimestralRead]:
     return crud.list_indicadores_trimestrais(
@@ -42,6 +44,8 @@ def list_indicadores_trimestrais(
         turma_id=turma_id,
         ano=ano,
         trimestre=trimestre,
+        ano_escolar=ano_escolar,
+        fonte_avaliacao=fonte_avaliacao,
     )
 
 
@@ -82,7 +86,7 @@ def update_indicador_trimestral(
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="ja existe indicador para esta turma, ano e trimestre",
+            detail="ja existe indicador para esta turma, ano, trimestre, ano_escolar e fonte_avaliacao",
         )
 
 
@@ -100,4 +104,3 @@ def delete_indicador_trimestral(
 
     crud.delete_indicador_trimestral(db, indicador)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
-

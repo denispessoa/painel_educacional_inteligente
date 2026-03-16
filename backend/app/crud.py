@@ -1,7 +1,7 @@
 from decimal import Decimal, ROUND_HALF_UP
 from uuid import UUID
 
-from sqlalchemy import select, text
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app import models, schemas
@@ -139,10 +139,10 @@ def delete_turma(db: Session, turma: models.Turma) -> None:
     db.commit()
 
 
-def _calculate_percentual(alfabetizados: int, total_alunos: int) -> Decimal:
+def _calculate_percentual(atingiu_esperado: int, total_alunos: int) -> Decimal:
     if total_alunos == 0:
         return Decimal("0.00")
-    percentual = (Decimal(alfabetizados) * Decimal("100")) / Decimal(total_alunos)
+    percentual = (Decimal(atingiu_esperado) * Decimal("100")) / Decimal(total_alunos)
     return percentual.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
 
@@ -154,11 +154,26 @@ def create_indicador_trimestral(
         turma_id=payload.turma_id,
         ano=payload.ano,
         trimestre=payload.trimestre,
+        ano_escolar=payload.ano_escolar,
+        fonte_avaliacao=payload.fonte_avaliacao,
         total_alunos=payload.total_alunos,
-        alfabetizados_leitura=payload.alfabetizados_leitura,
-        alfabetizados_escrita=payload.alfabetizados_escrita,
-        percentual_leitura=_calculate_percentual(payload.alfabetizados_leitura, payload.total_alunos),
-        percentual_escrita=_calculate_percentual(payload.alfabetizados_escrita, payload.total_alunos),
+        alfabetizados_leitura=payload.atingiu_esperado_leitura,
+        alfabetizados_escrita=payload.atingiu_esperado_escrita,
+        atingiu_esperado_leitura=payload.atingiu_esperado_leitura,
+        atingiu_esperado_escrita=payload.atingiu_esperado_escrita,
+        atingiu_esperado_matematica=payload.atingiu_esperado_matematica,
+        percentual_leitura=_calculate_percentual(
+            payload.atingiu_esperado_leitura,
+            payload.total_alunos,
+        ),
+        percentual_escrita=_calculate_percentual(
+            payload.atingiu_esperado_escrita,
+            payload.total_alunos,
+        ),
+        percentual_matematica=_calculate_percentual(
+            payload.atingiu_esperado_matematica,
+            payload.total_alunos,
+        ),
     )
     db.add(indicador)
     db.commit()
@@ -171,6 +186,8 @@ def list_indicadores_trimestrais(
     turma_id: UUID | None = None,
     ano: int | None = None,
     trimestre: int | None = None,
+    ano_escolar: int | None = None,
+    fonte_avaliacao: schemas.FonteAvaliacao | None = None,
 ) -> list[models.IndicadorTrimestral]:
     stmt = select(models.IndicadorTrimestral)
 
@@ -180,10 +197,15 @@ def list_indicadores_trimestrais(
         stmt = stmt.where(models.IndicadorTrimestral.ano == ano)
     if trimestre is not None:
         stmt = stmt.where(models.IndicadorTrimestral.trimestre == trimestre)
+    if ano_escolar is not None:
+        stmt = stmt.where(models.IndicadorTrimestral.ano_escolar == ano_escolar)
+    if fonte_avaliacao is not None:
+        stmt = stmt.where(models.IndicadorTrimestral.fonte_avaliacao == fonte_avaliacao)
 
     stmt = stmt.order_by(
         models.IndicadorTrimestral.ano.desc(),
         models.IndicadorTrimestral.trimestre.desc(),
+        models.IndicadorTrimestral.ano_escolar.asc(),
     )
     return list(db.scalars(stmt))
 
@@ -203,15 +225,24 @@ def update_indicador_trimestral(
     indicador.turma_id = payload.turma_id
     indicador.ano = payload.ano
     indicador.trimestre = payload.trimestre
+    indicador.ano_escolar = payload.ano_escolar
+    indicador.fonte_avaliacao = payload.fonte_avaliacao
     indicador.total_alunos = payload.total_alunos
-    indicador.alfabetizados_leitura = payload.alfabetizados_leitura
-    indicador.alfabetizados_escrita = payload.alfabetizados_escrita
+    indicador.alfabetizados_leitura = payload.atingiu_esperado_leitura
+    indicador.alfabetizados_escrita = payload.atingiu_esperado_escrita
+    indicador.atingiu_esperado_leitura = payload.atingiu_esperado_leitura
+    indicador.atingiu_esperado_escrita = payload.atingiu_esperado_escrita
+    indicador.atingiu_esperado_matematica = payload.atingiu_esperado_matematica
     indicador.percentual_leitura = _calculate_percentual(
-        payload.alfabetizados_leitura,
+        payload.atingiu_esperado_leitura,
         payload.total_alunos,
     )
     indicador.percentual_escrita = _calculate_percentual(
-        payload.alfabetizados_escrita,
+        payload.atingiu_esperado_escrita,
+        payload.total_alunos,
+    )
+    indicador.percentual_matematica = _calculate_percentual(
+        payload.atingiu_esperado_matematica,
         payload.total_alunos,
     )
     db.commit()
@@ -224,15 +255,23 @@ def delete_indicador_trimestral(db: Session, indicador: models.IndicadorTrimestr
     db.commit()
 
 
-def _build_ima_base_stmt():
+def _build_component_base_stmt():
     return (
         select(
             models.IndicadorTrimestral.id.label("indicador_id"),
             models.IndicadorTrimestral.ano,
             models.IndicadorTrimestral.trimestre,
+            models.IndicadorTrimestral.ano_escolar,
+            models.IndicadorTrimestral.fonte_avaliacao,
             models.IndicadorTrimestral.total_alunos,
             models.IndicadorTrimestral.alfabetizados_leitura,
             models.IndicadorTrimestral.alfabetizados_escrita,
+            models.IndicadorTrimestral.atingiu_esperado_leitura,
+            models.IndicadorTrimestral.atingiu_esperado_escrita,
+            models.IndicadorTrimestral.atingiu_esperado_matematica,
+            models.IndicadorTrimestral.percentual_leitura,
+            models.IndicadorTrimestral.percentual_escrita,
+            models.IndicadorTrimestral.percentual_matematica,
             models.Turma.id.label("turma_id"),
             models.Turma.nome.label("turma_nome"),
             models.Escola.id.label("escola_id"),
@@ -248,10 +287,12 @@ def _build_ima_base_stmt():
     )
 
 
-def _apply_ima_filters(
+def _apply_component_filters(
     stmt,
     ano: int | None,
     trimestre: int | None,
+    ano_escolar: int | None,
+    fonte_avaliacao: schemas.FonteAvaliacao | None,
     municipio_id: UUID | None,
     escola_id: UUID | None,
     turma_id: UUID | None,
@@ -260,6 +301,10 @@ def _apply_ima_filters(
         stmt = stmt.where(models.IndicadorTrimestral.ano == ano)
     if trimestre is not None:
         stmt = stmt.where(models.IndicadorTrimestral.trimestre == trimestre)
+    if ano_escolar is not None:
+        stmt = stmt.where(models.IndicadorTrimestral.ano_escolar == ano_escolar)
+    if fonte_avaliacao is not None:
+        stmt = stmt.where(models.IndicadorTrimestral.fonte_avaliacao == fonte_avaliacao)
     if municipio_id is not None:
         stmt = stmt.where(models.Municipio.id == municipio_id)
     if escola_id is not None:
@@ -279,20 +324,39 @@ def _compute_ima_metrics(total_alunos: int, leitura_total: int, escrita_total: i
     return percentual_leitura, percentual_escrita, ima_medio
 
 
+def _compute_component_metrics(
+    total_alunos: int,
+    leitura_total: int,
+    escrita_total: int,
+    matematica_total: int,
+) -> tuple[float, float, float]:
+    if total_alunos <= 0:
+        return 0.0, 0.0, 0.0
+
+    percentual_leitura = round((leitura_total / total_alunos) * 100, 2)
+    percentual_escrita = round((escrita_total / total_alunos) * 100, 2)
+    percentual_matematica = round((matematica_total / total_alunos) * 100, 2)
+    return percentual_leitura, percentual_escrita, percentual_matematica
+
+
 def get_analytics_ima(
     db: Session,
     group_by: str = "municipio",
     ano: int | None = None,
     trimestre: int | None = None,
+    ano_escolar: int | None = None,
+    fonte_avaliacao: schemas.FonteAvaliacao | None = None,
     municipio_id: UUID | None = None,
     escola_id: UUID | None = None,
     turma_id: UUID | None = None,
 ) -> dict:
-    base_stmt = _build_ima_base_stmt()
-    base_stmt = _apply_ima_filters(
+    base_stmt = _build_component_base_stmt()
+    base_stmt = _apply_component_filters(
         base_stmt,
         ano=ano,
         trimestre=trimestre,
+        ano_escolar=ano_escolar,
+        fonte_avaliacao=fonte_avaliacao,
         municipio_id=municipio_id,
         escola_id=escola_id,
         turma_id=turma_id,
@@ -364,6 +428,8 @@ def get_analytics_ima(
             "group_by": group_by,
             "ano": ano,
             "trimestre": trimestre,
+            "ano_escolar": ano_escolar,
+            "fonte_avaliacao": fonte_avaliacao,
             "municipio_id": municipio_id,
             "escola_id": escola_id,
             "turma_id": turma_id,
@@ -374,6 +440,117 @@ def get_analytics_ima(
             "percentual_leitura_medio": percentual_leitura,
             "percentual_escrita_medio": percentual_escrita,
             "ima_medio": ima_medio,
+        },
+        "itens": itens,
+    }
+
+
+def get_analytics_desempenho(
+    db: Session,
+    group_by: str = "municipio",
+    ano: int | None = None,
+    trimestre: int | None = None,
+    ano_escolar: int | None = None,
+    fonte_avaliacao: schemas.FonteAvaliacao | None = None,
+    municipio_id: UUID | None = None,
+    escola_id: UUID | None = None,
+    turma_id: UUID | None = None,
+) -> dict:
+    base_stmt = _build_component_base_stmt()
+    base_stmt = _apply_component_filters(
+        base_stmt,
+        ano=ano,
+        trimestre=trimestre,
+        ano_escolar=ano_escolar,
+        fonte_avaliacao=fonte_avaliacao,
+        municipio_id=municipio_id,
+        escola_id=escola_id,
+        turma_id=turma_id,
+    )
+    rows = db.execute(base_stmt).mappings().all()
+
+    total_registros = len(rows)
+    total_alunos = sum(row["total_alunos"] for row in rows)
+    leitura_total = sum(row["atingiu_esperado_leitura"] for row in rows)
+    escrita_total = sum(row["atingiu_esperado_escrita"] for row in rows)
+    matematica_total = sum(row["atingiu_esperado_matematica"] for row in rows)
+    percentual_leitura, percentual_escrita, percentual_matematica = _compute_component_metrics(
+        total_alunos,
+        leitura_total,
+        escrita_total,
+        matematica_total,
+    )
+
+    group_key_map = {
+        "municipio": ("municipio_id", "municipio_nome", "municipio_estado"),
+        "escola": ("escola_id", "escola_nome", None),
+        "turma": ("turma_id", "turma_nome", None),
+    }
+    id_key, name_key, state_key = group_key_map[group_by]
+
+    grouped: dict[UUID, dict] = {}
+    for row in rows:
+        group_id = row[id_key]
+        item = grouped.setdefault(
+            group_id,
+            {
+                "id": group_id,
+                "nome": row[name_key],
+                "total_registros": 0,
+                "total_alunos": 0,
+                "leitura_total": 0,
+                "escrita_total": 0,
+                "matematica_total": 0,
+            },
+        )
+        if state_key:
+            item["nome"] = f"{row[name_key]} ({row[state_key]})"
+        item["total_registros"] += 1
+        item["total_alunos"] += row["total_alunos"]
+        item["leitura_total"] += row["atingiu_esperado_leitura"]
+        item["escrita_total"] += row["atingiu_esperado_escrita"]
+        item["matematica_total"] += row["atingiu_esperado_matematica"]
+
+    itens = []
+    for item in grouped.values():
+        p_leitura, p_escrita, p_matematica = _compute_component_metrics(
+            item["total_alunos"],
+            item["leitura_total"],
+            item["escrita_total"],
+            item["matematica_total"],
+        )
+        itens.append(
+            {
+                "nivel": group_by,
+                "id": item["id"],
+                "nome": item["nome"],
+                "total_registros": item["total_registros"],
+                "total_alunos": item["total_alunos"],
+                "percentual_leitura_no_esperado": p_leitura,
+                "percentual_escrita_no_esperado": p_escrita,
+                "percentual_matematica_no_esperado": p_matematica,
+            }
+        )
+
+    itens.sort(key=lambda x: x["nome"])
+
+    return {
+        "filtros": {
+            "group_by": group_by,
+            "ano": ano,
+            "trimestre": trimestre,
+            "ano_escolar": ano_escolar,
+            "fonte_avaliacao": fonte_avaliacao,
+            "municipio_id": municipio_id,
+            "escola_id": escola_id,
+            "turma_id": turma_id,
+        },
+        "resumo": {
+            "total_registros": total_registros,
+            "total_alunos": total_alunos,
+            "percentual_leitura_no_esperado": percentual_leitura,
+            "percentual_escrita_no_esperado": percentual_escrita,
+            "percentual_matematica_no_esperado": percentual_matematica,
         },
         "itens": itens,
     }
@@ -421,96 +598,34 @@ def list_bi_hierarquia(
         models.Escola.nome,
         models.Turma.nome,
     )
-    rows = db.execute(stmt).mappings().all()
-    return [dict(row) for row in rows]
+    return [dict(row) for row in db.execute(stmt).mappings().all()]
 
 
-def _list_bi_indicadores_from_view(
-    db: Session,
-    municipio_id: UUID | None = None,
-    escola_id: UUID | None = None,
-    turma_id: UUID | None = None,
-    ano: int | None = None,
-    trimestre: int | None = None,
-) -> list[dict] | None:
-    bind = db.get_bind()
-    if bind is None or bind.dialect.name != "postgresql":
-        return None
-
-    where_clauses: list[str] = []
-    params: dict = {}
-
-    if municipio_id is not None:
-        where_clauses.append("municipio_id = :municipio_id")
-        params["municipio_id"] = str(municipio_id)
-    if escola_id is not None:
-        where_clauses.append("escola_id = :escola_id")
-        params["escola_id"] = str(escola_id)
-    if turma_id is not None:
-        where_clauses.append("turma_id = :turma_id")
-        params["turma_id"] = str(turma_id)
-    if ano is not None:
-        where_clauses.append("ano = :ano")
-        params["ano"] = ano
-    if trimestre is not None:
-        where_clauses.append("trimestre = :trimestre")
-        params["trimestre"] = trimestre
-
-    sql = """
-        SELECT
-            indicador_id,
-            ano,
-            trimestre,
-            turma_id,
-            turma_nome,
-            escola_id,
-            escola_nome,
-            municipio_id,
-            municipio_nome,
-            municipio_estado,
-            total_alunos,
-            alfabetizados_leitura,
-            alfabetizados_escrita,
-            percentual_leitura,
-            percentual_escrita,
-            ima
-        FROM vw_ima
-    """
-    if where_clauses:
-        sql += " WHERE " + " AND ".join(where_clauses)
-
-    sql += " ORDER BY ano DESC, trimestre DESC, municipio_nome, escola_nome, turma_nome"
-
-    try:
-        rows = db.execute(text(sql), params).mappings().all()
-    except Exception:
-        # In local/dev environments the view might not exist yet. Fallback to ORM join.
-        db.rollback()
-        return None
-
-    items: list[dict] = []
-    for row in rows:
-        items.append(
-            {
-                "indicador_id": row["indicador_id"],
-                "ano": row["ano"],
-                "trimestre": row["trimestre"],
-                "turma_id": row["turma_id"],
-                "turma_nome": row["turma_nome"],
-                "escola_id": row["escola_id"],
-                "escola_nome": row["escola_nome"],
-                "municipio_id": row["municipio_id"],
-                "municipio_nome": row["municipio_nome"],
-                "municipio_estado": row["municipio_estado"],
-                "total_alunos": row["total_alunos"],
-                "alfabetizados_leitura": row["alfabetizados_leitura"],
-                "alfabetizados_escrita": row["alfabetizados_escrita"],
-                "percentual_leitura": round(_to_float(row["percentual_leitura"]), 2),
-                "percentual_escrita": round(_to_float(row["percentual_escrita"]), 2),
-                "ima": round(_to_float(row["ima"]), 2),
-            }
-        )
-    return items
+def _legacy_bi_item_from_row(row: dict) -> dict:
+    percentual_leitura = _to_float(row["percentual_leitura"])
+    percentual_escrita = _to_float(row["percentual_escrita"])
+    return {
+        "indicador_id": row["indicador_id"],
+        "ano": row["ano"],
+        "trimestre": row["trimestre"],
+        "ano_escolar": row["ano_escolar"],
+        "fonte_avaliacao": row["fonte_avaliacao"],
+        "municipio_id": row["municipio_id"],
+        "municipio_nome": row["municipio_nome"],
+        "municipio_estado": row["municipio_estado"],
+        "escola_id": row["escola_id"],
+        "escola_nome": row["escola_nome"],
+        "turma_id": row["turma_id"],
+        "turma_nome": row["turma_nome"],
+        "total_alunos": row["total_alunos"],
+        "alfabetizados_leitura": row["alfabetizados_leitura"],
+        "alfabetizados_escrita": row["alfabetizados_escrita"],
+        "atingiu_esperado_matematica": row["atingiu_esperado_matematica"],
+        "percentual_leitura": percentual_leitura,
+        "percentual_escrita": percentual_escrita,
+        "percentual_matematica": _to_float(row["percentual_matematica"]),
+        "ima": round((percentual_leitura + percentual_escrita) / 2, 2),
+    }
 
 
 def list_bi_indicadores_trimestrais(
@@ -520,54 +635,20 @@ def list_bi_indicadores_trimestrais(
     turma_id: UUID | None = None,
     ano: int | None = None,
     trimestre: int | None = None,
+    ano_escolar: int | None = None,
+    fonte_avaliacao: schemas.FonteAvaliacao | None = None,
 ) -> list[dict]:
-    view_rows = _list_bi_indicadores_from_view(
-        db,
+    stmt = _build_component_base_stmt()
+    stmt = _apply_component_filters(
+        stmt,
+        ano=ano,
+        trimestre=trimestre,
+        ano_escolar=ano_escolar,
+        fonte_avaliacao=fonte_avaliacao,
         municipio_id=municipio_id,
         escola_id=escola_id,
         turma_id=turma_id,
-        ano=ano,
-        trimestre=trimestre,
-    )
-    if view_rows is not None:
-        return view_rows
-
-    stmt = (
-        select(
-            models.IndicadorTrimestral.id.label("indicador_id"),
-            models.IndicadorTrimestral.ano,
-            models.IndicadorTrimestral.trimestre,
-            models.Turma.id.label("turma_id"),
-            models.Turma.nome.label("turma_nome"),
-            models.Escola.id.label("escola_id"),
-            models.Escola.nome.label("escola_nome"),
-            models.Municipio.id.label("municipio_id"),
-            models.Municipio.nome.label("municipio_nome"),
-            models.Municipio.estado.label("municipio_estado"),
-            models.IndicadorTrimestral.total_alunos,
-            models.IndicadorTrimestral.alfabetizados_leitura,
-            models.IndicadorTrimestral.alfabetizados_escrita,
-            models.IndicadorTrimestral.percentual_leitura,
-            models.IndicadorTrimestral.percentual_escrita,
-        )
-        .select_from(models.IndicadorTrimestral)
-        .join(models.Turma, models.IndicadorTrimestral.turma_id == models.Turma.id)
-        .join(models.Escola, models.Turma.escola_id == models.Escola.id)
-        .join(models.Municipio, models.Escola.municipio_id == models.Municipio.id)
-    )
-
-    if municipio_id is not None:
-        stmt = stmt.where(models.Municipio.id == municipio_id)
-    if escola_id is not None:
-        stmt = stmt.where(models.Escola.id == escola_id)
-    if turma_id is not None:
-        stmt = stmt.where(models.Turma.id == turma_id)
-    if ano is not None:
-        stmt = stmt.where(models.IndicadorTrimestral.ano == ano)
-    if trimestre is not None:
-        stmt = stmt.where(models.IndicadorTrimestral.trimestre == trimestre)
-
-    stmt = stmt.order_by(
+    ).order_by(
         models.IndicadorTrimestral.ano.desc(),
         models.IndicadorTrimestral.trimestre.desc(),
         models.Municipio.nome,
@@ -576,28 +657,60 @@ def list_bi_indicadores_trimestrais(
     )
 
     rows = db.execute(stmt).mappings().all()
-    items: list[dict] = []
-    for row in rows:
-        percentual_leitura = round(_to_float(row["percentual_leitura"]), 2)
-        percentual_escrita = round(_to_float(row["percentual_escrita"]), 2)
+    return [_legacy_bi_item_from_row(row) for row in rows]
+
+
+def list_bi_indicadores_componentes(
+    db: Session,
+    municipio_id: UUID | None = None,
+    escola_id: UUID | None = None,
+    turma_id: UUID | None = None,
+    ano: int | None = None,
+    trimestre: int | None = None,
+    ano_escolar: int | None = None,
+    fonte_avaliacao: schemas.FonteAvaliacao | None = None,
+) -> list[dict]:
+    stmt = _build_component_base_stmt()
+    stmt = _apply_component_filters(
+        stmt,
+        ano=ano,
+        trimestre=trimestre,
+        ano_escolar=ano_escolar,
+        fonte_avaliacao=fonte_avaliacao,
+        municipio_id=municipio_id,
+        escola_id=escola_id,
+        turma_id=turma_id,
+    ).order_by(
+        models.IndicadorTrimestral.ano.desc(),
+        models.IndicadorTrimestral.trimestre.desc(),
+        models.Municipio.nome,
+        models.Escola.nome,
+        models.Turma.nome,
+    )
+
+    items = []
+    for row in db.execute(stmt).mappings().all():
         items.append(
             {
                 "indicador_id": row["indicador_id"],
                 "ano": row["ano"],
                 "trimestre": row["trimestre"],
-                "turma_id": row["turma_id"],
-                "turma_nome": row["turma_nome"],
-                "escola_id": row["escola_id"],
-                "escola_nome": row["escola_nome"],
+                "ano_escolar": row["ano_escolar"],
+                "fonte_avaliacao": row["fonte_avaliacao"],
                 "municipio_id": row["municipio_id"],
                 "municipio_nome": row["municipio_nome"],
                 "municipio_estado": row["municipio_estado"],
+                "escola_id": row["escola_id"],
+                "escola_nome": row["escola_nome"],
+                "turma_id": row["turma_id"],
+                "turma_nome": row["turma_nome"],
                 "total_alunos": row["total_alunos"],
-                "alfabetizados_leitura": row["alfabetizados_leitura"],
-                "alfabetizados_escrita": row["alfabetizados_escrita"],
-                "percentual_leitura": percentual_leitura,
-                "percentual_escrita": percentual_escrita,
-                "ima": round((percentual_leitura + percentual_escrita) / 2, 2),
+                "atingiu_esperado_leitura": row["atingiu_esperado_leitura"],
+                "atingiu_esperado_escrita": row["atingiu_esperado_escrita"],
+                "atingiu_esperado_matematica": row["atingiu_esperado_matematica"],
+                "percentual_leitura": _to_float(row["percentual_leitura"]),
+                "percentual_escrita": _to_float(row["percentual_escrita"]),
+                "percentual_matematica": _to_float(row["percentual_matematica"]),
             }
         )
     return items
@@ -608,15 +721,19 @@ def get_bi_ima(
     group_by: str = "municipio",
     ano: int | None = None,
     trimestre: int | None = None,
+    ano_escolar: int | None = None,
+    fonte_avaliacao: schemas.FonteAvaliacao | None = None,
     municipio_id: UUID | None = None,
     escola_id: UUID | None = None,
     turma_id: UUID | None = None,
 ) -> dict:
-    data = get_analytics_ima(
+    analytics = get_analytics_ima(
         db,
         group_by=group_by,
         ano=ano,
         trimestre=trimestre,
+        ano_escolar=ano_escolar,
+        fonte_avaliacao=fonte_avaliacao,
         municipio_id=municipio_id,
         escola_id=escola_id,
         turma_id=turma_id,
@@ -624,12 +741,52 @@ def get_bi_ima(
     return {
         "group_by": group_by,
         "filtros": {
-            "ano": ano,
-            "trimestre": trimestre,
-            "municipio_id": municipio_id,
-            "escola_id": escola_id,
-            "turma_id": turma_id,
+            "ano": analytics["filtros"]["ano"],
+            "trimestre": analytics["filtros"]["trimestre"],
+            "ano_escolar": analytics["filtros"]["ano_escolar"],
+            "fonte_avaliacao": analytics["filtros"]["fonte_avaliacao"],
+            "municipio_id": analytics["filtros"]["municipio_id"],
+            "escola_id": analytics["filtros"]["escola_id"],
+            "turma_id": analytics["filtros"]["turma_id"],
         },
-        "resumo": data["resumo"],
-        "itens": data["itens"],
+        "resumo": analytics["resumo"],
+        "itens": analytics["itens"],
+    }
+
+
+def get_bi_desempenho(
+    db: Session,
+    group_by: str = "municipio",
+    ano: int | None = None,
+    trimestre: int | None = None,
+    ano_escolar: int | None = None,
+    fonte_avaliacao: schemas.FonteAvaliacao | None = None,
+    municipio_id: UUID | None = None,
+    escola_id: UUID | None = None,
+    turma_id: UUID | None = None,
+) -> dict:
+    analytics = get_analytics_desempenho(
+        db,
+        group_by=group_by,
+        ano=ano,
+        trimestre=trimestre,
+        ano_escolar=ano_escolar,
+        fonte_avaliacao=fonte_avaliacao,
+        municipio_id=municipio_id,
+        escola_id=escola_id,
+        turma_id=turma_id,
+    )
+    return {
+        "group_by": group_by,
+        "filtros": {
+            "ano": analytics["filtros"]["ano"],
+            "trimestre": analytics["filtros"]["trimestre"],
+            "ano_escolar": analytics["filtros"]["ano_escolar"],
+            "fonte_avaliacao": analytics["filtros"]["fonte_avaliacao"],
+            "municipio_id": analytics["filtros"]["municipio_id"],
+            "escola_id": analytics["filtros"]["escola_id"],
+            "turma_id": analytics["filtros"]["turma_id"],
+        },
+        "resumo": analytics["resumo"],
+        "itens": analytics["itens"],
     }

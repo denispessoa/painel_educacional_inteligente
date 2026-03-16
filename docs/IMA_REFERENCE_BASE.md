@@ -1,137 +1,111 @@
-# Base de Referencia do IMA Medio
+# Base de Referencia das Metricas por Componente
 
 ## Objetivo
-Registrar a base pedagogica e avaliativa que deve orientar a evolucao do `IMA medio`.
+Registrar a base pedagogica e semantica que orienta o modelo atual de `leitura`, `escrita` e `matematica` do produto.
 
-## Status atual do produto
-- O `IMA medio` implementado no MVP e uma metrica operacional interna.
-- Formula atual: `(percentual_leitura + percentual_escrita) / 2`.
-- Esses percentuais sao calculados a partir de contagens agregadas por turma e periodo.
-- A metrica atual nao representa, por si so, uma escala oficial de proficiencia do Saeb, do CNCA ou do Avalia RJ.
-- Matematica ainda nao compoe o `IMA medio` implementado.
+## Decisao consolidada
+- `1o-5o ano`: referencia operacional `CNCA`
+- `6o-9o ano`: referencia operacional `MEC Anos Finais BNCC`
+- `Saeb`: referencia complementar de governanca, comparabilidade e interpretacao de bandas
+- metrica principal do produto:
+  - `percentual de estudantes no esperado` por componente
+- `IMA` permanece apenas como indicador legado de compatibilidade por `1 ciclo`
 
-## Decisao de referencia
-- A evolucao semantica do `IMA medio` deve tomar como referencia oficial:
-  - `Saeb` para `5o` e `9o` ano do Ensino Fundamental em `Lingua Portuguesa` e `Matematica`.
-  - `Saeb/CNCA` para `2o` ano do Ensino Fundamental, considerando `leitura`, `escrita` e `matematica`.
-  - `Alfabetiza RJ` / `Avalia RJ` como camada estadual de aplicacao diagnostica no Rio de Janeiro, vinculada ao regime de colaboracao do `Compromisso Nacional Crianca Alfabetizada`.
-- O `CAEd` deve ser tratado como parceiro/plataforma de operacionalizacao de avaliacoes em larga escala, e nao como a referencia normativa principal da metrica.
+## Componentes validos no modelo
+- `leitura`
+- `escrita`
+- `matematica`
 
-## Referencias oficiais adotadas
+Esses tres componentes sao tratados como metricas independentes, sempre contextualizadas por:
+- `ano_escolar`
+- `fonte_avaliacao`
+- `ano`
+- `trimestre`
 
-### 1) Saeb: pagina oficial de matrizes e escalas
-- O Inep descreve as matrizes como instrumentos norteadores para construcao de itens e analise de resultados.
-- O mesmo portal informa que, para preservar comparabilidade, `Lingua Portuguesa` e `Matematica` do `5o` e `9o` ano ainda usam a matriz historica nas aplicacoes comparaveis.
-- Fonte oficial:
-  - [Matrizes e Escalas - Inep](https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/saeb/matrizes-e-escalas)
+## Corte de desempenho adotado
+- `atingiu o esperado = Proficiente + Avancado`
 
-### 2) Saeb: matrizes de referencia para 5o e 9o ano
-- `Lingua Portuguesa`:
-  - `5o ano`: procedimentos de leitura; implicacoes do suporte, do genero e/ou do enunciador; relacao entre textos; coerencia e coesao; relacoes entre recursos expressivos; variacao linguistica.
-  - `9o ano`: mesma estrutura, com maior complexidade e descritores ampliados.
-- `Matematica`:
-  - `5o ano`: espaco e forma; grandezas e medidas; numeros e operacoes/algebra e funcoes; tratamento da informacao.
-  - `9o ano`: espaco e forma; grandezas e medidas; numeros e operacoes/algebra e funcoes; tratamento da informacao, com maior complexidade cognitiva.
-- Fonte oficial:
-  - [Matriz de Referencia de Lingua Portuguesa e Matematica do Saeb](https://download.inep.gov.br/publicacoes/institucionais/avaliacoes_e_exames_da_educacao_basica/matriz_de_referencia_de_lingua_portuguesa_e_matematica_do_saeb.pdf)
+## Normalizacao interna de bandas
+O produto usa uma taxonomia interna comum:
+- `abaixo_basico`
+- `basico`
+- `proficiente`
+- `avancado`
 
-### 3) Saeb: escalas de proficiencia para 5o e 9o ano
-- O Inep publica as escalas de proficiencia de `Lingua Portuguesa` e `Matematica` para `5o` e `9o` ano.
-- Essas escalas descrevem niveis crescentes de desempenho e exemplos de habilidades dominadas em cada faixa.
-- Fonte oficial:
-  - [Escalas de proficiencia do Saeb](https://download.inep.gov.br/publicacoes/institucionais/avaliacoes_e_exames_da_educacao_basica/escalas_de_proficiencia_do_saeb.pdf)
+Para referencias com niveis numerados:
+- escalas com `8 niveis`: `1-2`, `3-4`, `5-6`, `7-8`
+- escalas com `9 niveis`: `1-2`, `3-4`, `5-6`, `7-9`
 
-## Artefatos ja versionados no repositorio
-- O projeto passa a manter copias controladas em `docs/references/saeb/`:
-  - `matriz_matematica-base-saeb-2001.pdf`
-  - `matriz_linguaportuguesa-base-saeb-2001.pdf`
-  - `matriz-de-referencia-de-matematica_BNCC-2018.pdf`
-  - `matriz-de-referencia-de-linguagens_BNCC-2018.pdf`
-  - `escala_de_proficiencias_saeb_2025.pdf`
-- O projeto tambem passa a manter copias controladas em `docs/references/cnca/`:
-  - `CNCAGuiadaAvaliaoContnua.pdf`
-  - `MEC_2026_CNCA_Av_Cont_Apren_Matriz_Ref.pdf`
-- Leitura recomendada para o projeto:
-  - `base-saeb-2001`: referencia principal de comparabilidade para `5o` e `9o` ano em `Lingua Portuguesa` e `Matematica`.
-  - `BNCC-2018`: referencia de evolucao curricular e de transicao de matriz, util para planejamento semantico e comparacoes futuras.
-  - `escala_de_proficiencias_saeb_2025`: referencia de niveis/faixas de desempenho a serem associados a uma futura camada de proficiencia.
-- Recomendacao operacional:
-  - manter esses arquivos sincronizados com a versao oficial usada em cada decisao semantica;
-  - quando houver troca de versao, registrar a mudanca em documentacao e no historico Git.
+## Papel de cada referencia
 
-### 4) Saeb/CNCA: alfabetizacao no 2o ano
-- O Inep publicou orientacoes especificas para o `2o ano`:
-  - `Lingua Portuguesa`: eixo de apropriacao do sistema de escrita alfabetico, eixo de leitura e eixo de producao textual.
-  - `Matematica`: letramento matematico, com habilidades distribuidas em eixos cognitivos e unidades tematicas alinhadas a BNCC.
-- Fontes oficiais:
-  - [Descricao das habilidades da matriz de Lingua Portuguesa e exemplos de itens | 2o ano](https://download.inep.gov.br/avaliacao_da_alfabetizacao/orientacoes_pedagogicas/descricao_habilidades_lingua_portuguesa_2_ano_ef.pdf)
-  - [Orientacoes sobre as habilidades da matriz de Matematica | 2o ano](https://download.inep.gov.br/avaliacao_da_alfabetizacao/orientacoes_pedagogicas/descricao_habilidades_matematica_2_ano_ef.pdf)
+### CNCA (`1o-5o`)
+- base operacional dos anos iniciais
+- cobre `leitura`, `escrita` e `matematica`
+- o `1o ano` ja entra no modelo vigente
 
-### 5) CNCA: guia de avaliacao e niveis nacionais
-- O `Compromisso Nacional Crianca Alfabetizada` explicita que:
-  - Saeb e CNCA compartilham a referencia para o `2o ano`.
-  - As matrizes do CNCA organizam habilidades basicas e prioritarias ao longo dos ciclos avaliativos.
-- O Inep tambem publicou o documento preliminar de niveis e metas do CNCA, com `ponto 743` da escala do Saeb como referencia nacional para alfabetizacao ao final do `2o ano`.
-- Fontes oficiais:
-  - [CNCA - Guia da Avaliacao Continua](https://www.gov.br/mec/pt-br/crianca-alfabetizada/pdf/CNCAGuiadaAvaliaoContnua.pdf)
-  - [Niveis de alfabetizacao e definicao de metas para o CNCA](https://download.inep.gov.br/avaliacao_da_alfabetizacao/documentos_tecnicos/niveis_metas.pdf)
-  - [Relatorio da Pesquisa Alfabetiza Brasil](https://www.gov.br/inep/pt-br/centrais-de-conteudo/acervo-linha-editorial/publicacoes-institucionais/avaliacoes-e-exames-da-educacao-basica/relatorio-da-pesquisa-alfabetiza-brasil-diretrizes-para-uma-politica-nacional-de-avaliacao-da-alfabetizacao-das-criancas)
+Arquivos versionados:
+- `docs/references/cnca/CNCAGuiadaAvaliaoContnua.pdf`
+- `docs/references/cnca/MEC_2026_CNCA_Av_Cont_Apren_Matriz_Ref.pdf`
+- `docs/references/cnca/MEC_2025-Matriz_Anos_Finais.pdf`
 
-### 6) Rio de Janeiro: Alfabetiza RJ / Avalia RJ
-- A `Seeduc-RJ` registra oficialmente o `Alfabetiza RJ` como avaliacao diagnostica aplicada aos estudantes do `2o ano` do Ensino Fundamental.
-- A mesma documentacao posiciona o programa dentro do `Compromisso Nacional Crianca Alfabetizada` e do regime de colaboracao com os `92 municipios`.
-- Fonte oficial:
-  - [Seeduc-RJ apresenta resultados da avaliacao Alfabetiza RJ em 2024](https://www.seeduc.rj.gov.br/not%C3%ADcias?fromSearch=true)
-  - [Seeduc-RJ - noticias sobre o Compromisso Nacional Crianca Alfabetizada e o programa Alfabetiza RJ](https://www.seeduc.rj.gov.br/mais/mais-not%C3%ADcias)
+### MEC Anos Finais BNCC (`6o-9o`)
+- base operacional dos anos finais
+- cobre `leitura`, `escrita` e `matematica`
+- nao deve ser apresentada como escala oficial Saeb
 
-### 7) Papel do CAEd
-- O CAEd informa que os itens de suas avaliacoes sao elaborados com base nas `Matrizes de Referencia` das redes e dos sistemas de ensino.
-- Isso reforca que a matriz normativa deve vir da politica avaliativa adotada pela rede, enquanto o `CAEd` atua na elaboracao/calibragem/operacionalizacao.
-- Fonte oficial:
-  - [Banco de itens - CAEd](https://caeddigital.net/tecnologias-2/banco-de-itens.html)
+Arquivo versionado:
+- `docs/references/cnca/MEC_2025-Matriz_Anos_Finais.pdf`
 
-## Implicacoes para o projeto
+### Saeb
+- permanece no repositorio como base de comparabilidade e governanca
+- ajuda a interpretar a progressao de habilidades e escalas, mas nao e a fonte operacional obrigatoria do modelo atual
 
-### 1) Leitura correta do IMA atual
-- O `IMA medio` atual deve ser lido como `proxy operacional de alfabetizacao agregada`.
-- Ele nao pode ser rotulado como `proficiencia media Saeb` nem como `indice oficial de proficiencia em matematica e lingua portuguesa`.
+Arquivos versionados:
+- `docs/references/saeb/matriz_matematica-base-saeb-2001.pdf`
+- `docs/references/saeb/matriz_linguaportuguesa-base-saeb-2001.pdf`
+- `docs/references/saeb/matriz-de-referencia-de-matematica_BNCC-2018.pdf`
+- `docs/references/saeb/matriz-de-referencia-de-linguagens_BNCC-2018.pdf`
+- `docs/references/saeb/escala_de_proficiencias_saeb_2025.pdf`
 
-### 2) Base para 2o ano
-- Para turmas do `2o ano`, a referencia pedagogica deve considerar:
-  - `Lingua Portuguesa`: apropriacao do sistema de escrita, leitura e producao textual.
-  - `Matematica`: letramento matematico.
-  - `CNCA`: ponto de corte nacional e niveis agregados de alfabetizacao.
+## Mapeamento semantico do modelo
+Campos canonicos por registro trimestral:
+- `ano_escolar`
+- `fonte_avaliacao`
+- `atingiu_esperado_leitura`
+- `atingiu_esperado_escrita`
+- `atingiu_esperado_matematica`
+- `percentual_leitura`
+- `percentual_escrita`
+- `percentual_matematica`
 
-### 3) Base para 5o e 9o ano
-- Para turmas do `5o` e `9o` ano, a referencia deve ser a combinacao de:
-  - matriz de `Lingua Portuguesa` do Saeb;
-  - matriz de `Matematica` do Saeb;
-  - escala de proficiencia correspondente por etapa e componente.
+Campos legados mantidos temporariamente:
+- `alfabetizados_leitura`
+- `alfabetizados_escrita`
 
-### 4) Efeito de governanca
-- Qualquer futura metrica que queira representar `proficiencia` precisa armazenar, no minimo:
-  - `ano_escolar_avaliado`
-  - `componente` (`portugues`, `matematica`)
-  - `fonte_avaliacao` (`saeb`, `cnca`, `alfabetiza_rj`, `avalia_rj`, `outra`)
-  - `versao_matriz`
-  - `escala` e/ou `nivel_proficiencia`
-  - `janela_aplicacao`
+Esses campos legados hoje sao aliases de leitura e escrita no esperado. Estao marcados como deprecated.
 
-## Recomendacao de nomenclatura
-- Manter o nome atual apenas se o produto explicitar que se trata de metrica interna.
-- Alternativa melhor para o estado atual:
-  - `Indice Municipal de Alfabetizacao - operacional`
-- Reservar uma futura variante para calibracao externa:
-  - `IMA calibrado por proficiencia`
+## Formula das metricas
+- `percentual_leitura = atingiu_esperado_leitura / total_alunos * 100`
+- `percentual_escrita = atingiu_esperado_escrita / total_alunos * 100`
+- `percentual_matematica = atingiu_esperado_matematica / total_alunos * 100`
+- se `total_alunos = 0`, todos os percentuais sao `0.00`
 
-## Proxima evolucao recomendada
-1. Renomear no BI as metricas atuais para evitar interpretacao incorreta de proficiencia oficial.
-2. Criar um catalogo de metricas com distincao entre:
-   - `indicador interno operacional`
-   - `indicador de proficiencia externa`
-3. Planejar a extensao do modelo para `matematica`.
-4. Introduzir `ano_escolar` e `fonte_avaliacao` no modelo de indicadores antes de tentar unificar `2o`, `5o` e `9o` ano em um unico indice.
+## Situacao do IMA
+- formula legada: `(percentual_leitura + percentual_escrita) / 2`
+- uso permitido: compatibilidade com camada BI antiga
+- uso nao recomendado: metrica principal de decisao
 
-## Limite identificado nesta pesquisa
-- Nao foi localizado, em dominio oficial indexavel da `Seeduc-RJ`, um PDF publico com uma `matriz propria do Avalia RJ` detalhada por descritores.
-- Ate que essa matriz seja publicada de forma oficial, o projeto deve tratar `Alfabetiza RJ / Avalia RJ` como avaliacao diagnostica estadual alinhada ao `CNCA` e ao ecossistema `Saeb`, e nao como uma matriz normativa autonoma ja documentada no repositorio.
+## Implicacoes de governanca
+Qualquer leitura do dado precisa considerar ao mesmo tempo:
+- serie avaliada
+- componente
+- fonte da matriz
+- periodo
+
+Comparacoes brutas entre `2o` e `9o` ano sem contextualizacao de etapa continuam semanticamente fracas, mesmo com a normalizacao interna.
+
+## Proximos passos recomendados
+1. Encerrar migracao do dashboard do Metabase para o modelo de componentes.
+2. Tratar `IMA` como visual legado, nao como indicador central.
+3. Criar catalogo formal de metricas e dicionario de dados na fase de governanca.
+4. Se houver necessidade futura de comparabilidade externa forte, introduzir camada explicita de nivel/banda por componente.
