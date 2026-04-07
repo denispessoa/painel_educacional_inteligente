@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AvaliaRJ 2025 · Mendes</title>
+  <style>
+    :root {
+      --navy:#142d4e;
+      --blue:#2d5d8f;
+      --teal:#2b7a78;
+      --gold:#d6aa3d;
+      --sand:#f5f1ea;
+      --paper:#fffdf9;
+      --ink:#263040;
+      --muted:#617084;
+      --line:rgba(20,45,78,.12);
+      --shadow:0 20px 45px rgba(18,33,56,.12);
+      --radius:28px;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      font-family:"Aptos","Segoe UI","Trebuchet MS",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(214,170,61,.22), transparent 32%),
+        radial-gradient(circle at top right, rgba(43,122,120,.18), transparent 28%),
+        linear-gradient(180deg, #f4efe6 0%, #f8f6f1 48%, #ffffff 100%);
+    }
+    .page {
+      width:min(1280px, calc(100vw - 48px));
+      margin:24px auto 48px;
+    }
+    .hero {
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:1.25fr .95fr;
+      gap:24px;
+      padding:34px;
+      border-radius:34px;
+      background:linear-gradient(135deg, rgba(20,45,78,.98), rgba(35,92,158,.94));
+      box-shadow:var(--shadow);
+      color:white;
+    }
+    .hero::after {
+      content:"";
+      position:absolute;
+      inset:auto -80px -120px auto;
+      width:320px;
+      height:320px;
+      border-radius:50%;
+      background:rgba(214,170,61,.18);
+    }
+    .eyebrow {
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:12px;
+      opacity:.78;
+      margin:0 0 14px;
+    }
+    h1,h2,h3,h4,p { margin:0; }
+    .hero h1 {
+      font-family:"Aptos Display","Bahnschrift","Segoe UI",sans-serif;
+      font-size:46px;
+      line-height:1.05;
+      max-width:700px;
+      margin-bottom:16px;
+    }
+    .hero p.lead {
+      max-width:720px;
+      font-size:17px;
+      line-height:1.6;
+      color:rgba(255,255,255,.84);
+    }
+    .hero-tags {
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:18px;
+    }
+    .hero-tags span {
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.08);
+      font-size:13px;
+    }
+    .hero-panel {
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+      align-content:start;
+    }
+    .kpi {
+      padding:18px;
+      border-radius:22px;
+      background:rgba(255,255,255,.11);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter:blur(8px);
+    }
+    .kpi span {
+      display:block;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      opacity:.72;
+      margin-bottom:10px;
+    }
+    .kpi strong {
+      display:block;
+      font-size:28px;
+      line-height:1;
+      margin-bottom:6px;
+    }
+    .kpi small {
+      color:rgba(255,255,255,.78);
+      font-size:13px;
+    }
+    .nav {
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin:18px 0 24px;
+      padding:10px 0;
+    }
+    .nav a {
+      text-decoration:none;
+      color:var(--navy);
+      background:rgba(255,255,255,.72);
+      border:1px solid var(--line);
+      padding:10px 14px;
+      border-radius:999px;
+      font-weight:600;
+    }
+    .section {
+      margin-top:20px;
+      padding:26px;
+      border-radius:30px;
+      background:rgba(255,255,255,.82);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+    .section-head {
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:end;
+      margin-bottom:20px;
+    }
+    .section-head h2 {
+      font-size:28px;
+      color:var(--navy);
+      margin-bottom:4px;
+    }
+    .section-head p {
+      color:var(--muted);
+      line-height:1.5;
+      max-width:700px;
+    }
+    .overview-grid, .school-grid, .actions-grid {
+      display:grid;
+      gap:18px;
+    }
+    .overview-grid {
+      grid-template-columns:1.1fr .9fr;
+    }
+    .school-tabs {
+      display:grid;
+      gap:18px;
+    }
+    .school-tablist {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:12px;
+    }
+    .school-tab {
+      padding:16px 18px;
+      border-radius:24px;
+      border:1px solid rgba(20,45,78,.1);
+      background:linear-gradient(180deg, #fffefb 0%, #f3eee4 100%);
+      text-align:left;
+      cursor:pointer;
+      font-family:inherit;
+      transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .school-tab:hover {
+      transform:translateY(-1px);
+      box-shadow:0 12px 24px rgba(18,33,56,.08);
+    }
+    .school-tab:focus-visible {
+      outline:2px solid var(--navy);
+      outline-offset:2px;
+    }
+    .school-tab.active {
+      background:linear-gradient(135deg, rgba(20,45,78,.98), rgba(35,92,158,.94));
+      border-color:rgba(20,45,78,.18);
+      box-shadow:0 18px 30px rgba(18,33,56,.14);
+    }
+    .school-tab__meta {
+      display:block;
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+    .school-tab strong {
+      display:block;
+      color:var(--navy);
+      font-size:17px;
+      line-height:1.25;
+      margin-bottom:6px;
+    }
+    .school-tab small {
+      color:var(--muted);
+      font-size:12px;
+    }
+    .school-tab.active .school-tab__meta,
+    .school-tab.active strong,
+    .school-tab.active small {
+      color:white;
+    }
+    .school-panels {
+      position:relative;
+    }
+    .school-panel {
+      display:grid;
+      gap:16px;
+    }
+    .school-panel[hidden] {
+      display:none;
+    }
+    .school-panel.active {
+      display:grid;
+    }
+    .levels-panel, .story-panel, .priority-panel, .heat-panel {
+      border-radius:24px;
+      padding:22px;
+      background:var(--paper);
+      border:1px solid var(--line);
+    }
+    .level-item + .level-item { margin-top:14px; }
+    .level-item__top, .metric-line {
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      margin-bottom:8px;
+    }
+    .bar-track {
+      width:100%;
+      height:12px;
+      border-radius:999px;
+      overflow:hidden;
+      background:#e5e7eb;
+    }
+    .bar-fill {
+      display:block;
+      height:100%;
+      border-radius:999px;
+    }
+    .story-list {
+      display:grid;
+      gap:16px;
+      margin-top:10px;
+    }
+    .story-item {
+      padding:16px 18px;
+      border-radius:20px;
+      background:#f7f3eb;
+      border:1px solid rgba(20,45,78,.08);
+    }
+    .story-item strong {
+      display:block;
+      color:var(--navy);
+      margin-bottom:6px;
+    }
+    .school-grid {
+      grid-template-columns:1fr;
+    }
+    .school-profile {
+      padding:22px;
+      border-radius:26px;
+      background:linear-gradient(180deg, #fffefb 0%, #f7f1e6 100%);
+      border:1px solid rgba(20,45,78,.08);
+      box-shadow:0 12px 28px rgba(18,33,56,.06);
+    }
+    .school-profile__head {
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:start;
+      margin-bottom:14px;
+    }
+    .school-profile__head h3 {
+      font-size:20px;
+      color:var(--navy);
+    }
+    .school-profile__band {
+      color:white;
+      font-size:12px;
+      font-weight:700;
+      padding:10px 14px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+    .school-profile__topline {
+      display:grid;
+      grid-template-columns:.9fr 1.1fr;
+      gap:18px;
+      margin-bottom:16px;
+    }
+    .adequacy-block {
+      padding:18px;
+      border-radius:22px;
+      background:rgba(255,255,255,.88);
+      border:1px solid rgba(20,45,78,.08);
+    }
+    .adequacy-block span {
+      display:block;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+    .adequacy-block strong {
+      display:block;
+      font-size:42px;
+      line-height:1;
+      color:var(--navy);
+      margin-bottom:8px;
+    }
+    .adequacy-block small {
+      color:var(--muted);
+      font-size:13px;
+    }
+    .school-meta {
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+    .school-meta div {
+      padding:14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.88);
+      border:1px solid rgba(20,45,78,.08);
+    }
+    .school-meta span {
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      margin-bottom:6px;
+    }
+    .school-meta strong {
+      color:var(--navy);
+      font-size:18px;
+    }
+    .adequacy-scale {
+      position:relative;
+      margin-bottom:18px;
+      padding-top:8px;
+    }
+    .adequacy-scale__segments {
+      display:grid;
+      grid-template-columns:25fr 25fr 20fr 30fr;
+      gap:4px;
+      height:14px;
+      border-radius:999px;
+      overflow:hidden;
+      background:#edf2f7;
+    }
+    .seg-1 { background:#c95c54; }
+    .seg-2 { background:#d8894d; }
+    .seg-3 { background:#d2b24c; }
+    .seg-4 { background:#2f855a; }
+    .adequacy-scale__marker {
+      position:absolute;
+      top:0;
+      width:4px;
+      height:24px;
+      border-radius:999px;
+      background:var(--navy);
+      transform:translateX(-50%);
+      box-shadow:0 0 0 3px rgba(255,255,255,.8);
+    }
+    .adequacy-scale__ticks {
+      display:flex;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:11px;
+      margin-top:6px;
+    }
+    .school-profile__distribution {
+      padding:16px 18px;
+      border-radius:22px;
+      background:rgba(255,255,255,.88);
+      border:1px solid rgba(20,45,78,.08);
+      margin-bottom:16px;
+    }
+    .level-stack {
+      display:flex;
+      width:100%;
+      height:18px;
+      border-radius:999px;
+      overflow:hidden;
+      background:#edf2f7;
+      margin-bottom:12px;
+    }
+    .level-stack__segment {
+      display:block;
+      height:100%;
+    }
+    .level-legend {
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px 16px;
+    }
+    .level-legend__item {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+      color:var(--ink);
+    }
+    .level-legend__item i {
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      display:inline-block;
+      flex:0 0 auto;
+    }
+    .level-legend__item strong {
+      margin-left:auto;
+      color:var(--navy);
+    }
+    .school-profile__skills {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+    .school-detail-panel {
+      padding:20px;
+      border-radius:24px;
+      background:var(--paper);
+      border:1px solid var(--line);
+      box-shadow:0 12px 28px rgba(18,33,56,.05);
+    }
+    .skill-chip-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:10px;
+    }
+    .skill-chip {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      position:relative;
+      text-align:left;
+      font-family:inherit;
+    }
+    .skill-chip__label {
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      white-space:nowrap;
+    }
+    .skill-chip__main {
+      font-weight:800;
+      letter-spacing:.02em;
+    }
+    .skill-chip__sub {
+      font-size:11px;
+      font-weight:700;
+      opacity:.72;
+    }
+    .skill-chip.header {
+      background:#eef3f8;
+      color:var(--navy);
+      border:1px solid rgba(20,45,78,.1);
+    }
+    .skill-chip.priority {
+      background:#fff6ea;
+      color:#8a4a06;
+      border:1px solid rgba(216,137,77,.22);
+      margin-top:4px;
+    }
+    .skill-chip.weak {
+      background:#fff1ef;
+      color:#8b2e27;
+      border:1px solid rgba(201,92,84,.18);
+    }
+    .skill-chip.strong {
+      background:#eef8f1;
+      color:#256146;
+      border:1px solid rgba(47,133,90,.18);
+    }
+    .skill-chip.tag {
+      background:#edf2f7;
+      color:var(--navy);
+      border:1px solid rgba(20,45,78,.08);
+      padding:6px 10px;
+      font-size:12px;
+      font-weight:600;
+    }
+    .skill-chip::after {
+      content:attr(data-tooltip);
+      position:absolute;
+      left:0;
+      top:calc(100% + 10px);
+      width:260px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:rgba(20,45,78,.96);
+      color:white;
+      font-size:12px;
+      line-height:1.5;
+      box-shadow:0 16px 30px rgba(18,33,56,.22);
+      opacity:0;
+      transform:translateY(4px);
+      pointer-events:none;
+      transition:opacity .18s ease, transform .18s ease;
+      z-index:20;
+      white-space:normal;
+    }
+    .skill-chip:hover::after,
+    .skill-chip:focus::after,
+    .skill-chip:focus-visible::after {
+      opacity:1;
+      transform:translateY(0);
+    }
+    .skill-chip:focus-visible {
+      outline:2px solid var(--navy);
+      outline-offset:2px;
+    }
+    .mini-label {
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .rank-chip {
+      min-width:48px;
+      height:48px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      background:var(--navy);
+      color:white;
+      font-weight:700;
+    }
+    .table-shell {
+      overflow:auto;
+      border-radius:22px;
+      border:1px solid rgba(20,45,78,.08);
+      background:white;
+    }
+    .turma-card-grid {
+      display:grid;
+      gap:14px;
+    }
+    .school-turma-card-grid {
+      grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+    }
+    table {
+      width:100%;
+      border-collapse:collapse;
+      min-width:820px;
+    }
+    th, td {
+      padding:14px 12px;
+      border-bottom:1px solid rgba(20,45,78,.08);
+      text-align:left;
+      vertical-align:top;
+    }
+    th {
+      position:sticky;
+      top:0;
+      background:#eef3f8;
+      color:var(--navy);
+      font-size:13px;
+    }
+    .tag {
+      display:inline-flex;
+      align-items:center;
+      border-radius:999px;
+      background:#edf2f7;
+      color:var(--navy);
+      padding:6px 10px;
+      font-size:12px;
+      font-weight:600;
+    }
+    .priority-grid {
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:18px;
+    }
+    .priority-row + .priority-row { margin-top:16px; }
+    .priority-row {
+      display:grid;
+      grid-template-columns:1.4fr .8fr;
+      gap:18px;
+      padding:18px;
+      border-radius:22px;
+      background:#fffefb;
+      border:1px solid rgba(20,45,78,.08);
+    }
+    .priority-row p {
+      color:var(--muted);
+      line-height:1.5;
+      margin-top:6px;
+    }
+    .priority-score {
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:10px;
+    }
+    .priority-score strong {
+      font-size:28px;
+      color:var(--navy);
+    }
+    .turma-card {
+      position:relative;
+      overflow:hidden;
+      padding:18px;
+      border-radius:22px;
+      background:#fffefb;
+      border:1px solid rgba(20,45,78,.08);
+      box-shadow:0 12px 28px rgba(18,33,56,.06);
+    }
+    .turma-card::before {
+      content:"";
+      position:absolute;
+      inset:0 auto 0 0;
+      width:6px;
+      background:var(--turma-accent, var(--blue));
+    }
+    .turma-card__badges {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:14px;
+      padding-left:8px;
+    }
+    .turma-pill {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:28px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid transparent;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+    .turma-pill--status {
+      backdrop-filter:blur(8px);
+    }
+    .turma-pill--best {
+      background:rgba(43,122,120,.12);
+      border-color:rgba(43,122,120,.2);
+      color:#1f6d6a;
+    }
+    .turma-pill--worst {
+      background:rgba(198,91,82,.12);
+      border-color:rgba(198,91,82,.2);
+      color:#a94442;
+    }
+    .turma-card__head {
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:14px;
+      align-items:center;
+      margin-bottom:14px;
+    }
+    .turma-card__head h4 {
+      color:var(--navy);
+      font-size:18px;
+      margin-bottom:4px;
+    }
+    .turma-card__head p {
+      color:var(--muted);
+      line-height:1.4;
+    }
+    .turma-card__metrics {
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:10px;
+      margin-bottom:14px;
+    }
+    .turma-card__metrics div,
+    .heatmap-card__meta-item {
+      padding:12px 14px;
+      border-radius:18px;
+      background:#f6f8fb;
+      border:1px solid rgba(20,45,78,.06);
+    }
+    .turma-card__metrics span,
+    .heatmap-card__meta-item span {
+      display:block;
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .turma-card__metrics strong,
+    .heatmap-card__meta-item strong {
+      color:var(--navy);
+      font-size:17px;
+    }
+    .turma-card__focus {
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .strength-stack {
+      display:grid;
+      gap:12px;
+      margin-top:12px;
+    }
+    .strength-chip {
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      border-radius:18px;
+      background:linear-gradient(90deg, rgba(43,122,120,.12), rgba(214,170,61,.15));
+      border:1px solid rgba(20,45,78,.08);
+      font-weight:700;
+    }
+    .heat-cell {
+      color:white;
+      font-weight:700;
+    }
+    .heatmap-grid {
+      display:grid;
+      grid-template-columns:1fr;
+      gap:16px;
+    }
+    .heatmap-card {
+      padding:18px;
+      border-radius:24px;
+      background:#fffefb;
+      border:1px solid rgba(20,45,78,.08);
+      box-shadow:0 12px 28px rgba(18,33,56,.06);
+    }
+    .heatmap-card__head {
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:16px;
+      align-items:start;
+      margin-bottom:14px;
+    }
+    .heatmap-card__head h4 {
+      color:var(--navy);
+      font-size:20px;
+      margin-bottom:4px;
+    }
+    .heatmap-card__head p {
+      color:var(--muted);
+      line-height:1.45;
+    }
+    .heatmap-card__meta {
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:10px;
+    }
+    .heatmap-card__grid {
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
+      gap:10px;
+    }
+    .heat-tile {
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:12px;
+      min-height:90px;
+      padding:12px;
+      border:none;
+      border-radius:18px;
+      cursor:pointer;
+      position:relative;
+      text-align:left;
+      font-family:inherit;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+    .heat-tile strong {
+      font-size:20px;
+      line-height:1;
+    }
+    .heat-tile::after {
+      content:attr(data-tooltip);
+      position:absolute;
+      left:0;
+      top:calc(100% + 10px);
+      width:260px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:rgba(20,45,78,.96);
+      color:white;
+      font-size:12px;
+      line-height:1.5;
+      box-shadow:0 16px 30px rgba(18,33,56,.22);
+      opacity:0;
+      transform:translateY(4px);
+      pointer-events:none;
+      transition:opacity .18s ease, transform .18s ease;
+      z-index:20;
+      white-space:normal;
+    }
+    .heat-tile:hover::after,
+    .heat-tile:focus::after,
+    .heat-tile:focus-visible::after {
+      opacity:1;
+      transform:translateY(0);
+    }
+    .heat-tile:focus-visible {
+      outline:2px solid var(--navy);
+      outline-offset:2px;
+    }
+    .actions-grid {
+      grid-template-columns:repeat(4,1fr);
+    }
+    .action-card {
+      padding:20px;
+      border-radius:24px;
+      background:linear-gradient(180deg, rgba(20,45,78,.96), rgba(35,92,158,.92));
+      color:white;
+      box-shadow:var(--shadow);
+    }
+    .action-card h4 {
+      margin-bottom:10px;
+      font-size:20px;
+    }
+    .action-card p {
+      color:rgba(255,255,255,.82);
+      line-height:1.6;
+    }
+    .footer {
+      margin-top:18px;
+      padding:20px 24px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+    }
+    @media (max-width: 1080px) {
+      .hero, .overview-grid, .priority-grid { grid-template-columns:1fr; }
+      .actions-grid { grid-template-columns:1fr 1fr; }
+      .school-profile__topline, .school-profile__skills { grid-template-columns:1fr; }
+      .heatmap-card__head { grid-template-columns:1fr; }
+      .heatmap-card__grid { grid-template-columns:repeat(4, minmax(0, 1fr)); }
+    }
+    @media (max-width: 760px) {
+      .page { width:min(100vw - 20px, 100%); margin:10px auto 28px; }
+      .hero { padding:24px; }
+      .hero h1 { font-size:34px; }
+      .hero-panel, .actions-grid, .school-meta, .level-legend, .turma-card__metrics, .heatmap-card__meta { grid-template-columns:1fr; }
+      .priority-row { grid-template-columns:1fr; }
+      .section { padding:20px; }
+      .nav { display:grid; grid-template-columns:1fr 1fr; }
+      .school-tablist { grid-template-columns:1fr; }
+      .turma-card-grid { grid-template-columns:1fr; }
+      .heatmap-card__grid { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+      .heat-tile { min-height:84px; padding:10px; gap:10px; }
+      .heat-tile strong { font-size:18px; }
+      .skill-chip__label { white-space:normal; }
+      .skill-chip__sub { font-size:10px; }
+      .turma-card__badges { padding-left:0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Secretaria Municipal de Educação de MENDES</p>
+        <h1>AvaliaRJ 2025 · Painel Executivo do 2º Ano</h1>
+        <p class="lead">
+          Síntese visual para apresentação institucional do recorte de Língua Portuguesa · bloco principal H01-H08, com foco em participação, proficiência, distribuição de desempenho e habilidades prioritárias da rede municipal.
+        </p>
+        <div class="hero-tags">
+          <span>AVALIA RJ 2025</span>
+          <span>ENSINO FUNDAMENTAL DE 9 ANOS - 2º ANO</span>
+          <span>LP</span>
+          <span>Língua Portuguesa · bloco principal H01-H08</span>
+          <span>Gerado em 27/03/2026 10:36</span>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="kpi"><span>Participação</span><strong>91,1%</strong><small>112 avaliados de 123 previstos</small></div>
+        <div class="kpi"><span>Proficiência média</span><strong>621,35</strong><small>Resultado ponderado da rede</small></div>
+        <div class="kpi"><span>Esperado+</span><strong>59,0%</strong><small>Adequado + Avançado</small></div>
+        <div class="kpi"><span>Crítico</span><strong>41,4%</strong><small>Abaixo do básico + Básico</small></div>
+      </div>
+    </section>
+
+    <nav class="nav">
+      <a href="#rede">Rede</a>
+      <a href="#escolas">Escolas</a>
+      <a href="#habilidades">Habilidades</a>
+      <a href="#acoes">Encaminhamentos</a>
+    </nav>
+
+    <section id="rede" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Panorama da Rede</h2>
+          <p>Leitura rápida do desempenho municipal para tomada de decisão da Secretaria. Os dois arquivos atuais trazem o bloco principal de Língua Portuguesa e não exibem os itens de resposta construída D09 e D10 neste recorte. Ao passar o mouse sobre as habilidades, o tooltip exibe apenas o significado do descritor.</p>
+        </div>
+      </div>
+      <div class="overview-grid">
+        <div class="levels-panel">
+          <p class="mini-label">Distribuição dos estudantes por faixa de desempenho</p>
+          
+            <div class="level-item">
+              <div class="level-item__top">
+                <span>Abaixo do básico</span>
+                <strong>19,1%</strong>
+              </div>
+              <div class="bar-track"><span class="bar-fill" style="width:19.1%; background:#c95c54;"></span></div>
+            </div>
+            
+            <div class="level-item">
+              <div class="level-item__top">
+                <span>Básico</span>
+                <strong>22,4%</strong>
+              </div>
+              <div class="bar-track"><span class="bar-fill" style="width:22.4%; background:#d68d4a;"></span></div>
+            </div>
+            
+            <div class="level-item">
+              <div class="level-item__top">
+                <span>Adequado</span>
+                <strong>60,0%</strong>
+              </div>
+              <div class="bar-track"><span class="bar-fill" style="width:60.0%; background:#4b8f8c;"></span></div>
+            </div>
+            
+            <div class="level-item">
+              <div class="level-item__top">
+                <span>Avançado</span>
+                <strong>23,3%</strong>
+              </div>
+              <div class="bar-track"><span class="bar-fill" style="width:23.3%; background:#2f6f64;"></span></div>
+            </div>
+            
+        </div>
+        <div class="story-panel">
+          <p class="mini-label">Mensagens centrais</p>
+          <div class="story-list">
+            <div class="story-item"><strong>Destaque da rede</strong><span>Melhor escola: E. M. Jayme Siciliano com proficiência 624.</span></div>
+            <div class="story-item"><strong>Ponto de atenção</strong><span>Maior vulnerabilidade em 202 PARCIAL, da escola E. M. Jayme Siciliano, com proficiência 568.</span></div>
+            <div class="story-item"><strong>Potencial de escala</strong><span>Turma referência: 201 PARCIAL / E. M. Jayme Siciliano, com proficiência 660.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="escolas" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Aprendizado por Escola</h2>
+          <p>Leitura inspirada no QEdu: aprendizado adequado, faixas de interpretação, distribuição por níveis e habilidades prioritárias de cada escola.</p>
+        </div>
+      </div>
+      <div class="school-tabs">
+        <div class="school-tablist" role="tablist" aria-label="Escolas da rede">
+          
+            <button
+              type="button"
+              class="school-tab active"
+              id="school-tab-1"
+              role="tab"
+              aria-selected="true"
+              aria-controls="school-panel-1"
+              data-school-tab="school-panel-1">
+              <span class="school-tab__meta">Escola #1</span>
+              <strong>E. M. Jayme Siciliano</strong>
+              <small>Esperado+ 60,0%</small>
+            </button>
+            
+            <button
+              type="button"
+              class="school-tab"
+              id="school-tab-2"
+              role="tab"
+              aria-selected="false"
+              aria-controls="school-panel-2"
+              data-school-tab="school-panel-2">
+              <span class="school-tab__meta">Escola #2</span>
+              <strong>E. M. Maria Semedo de Andrade</strong>
+              <small>Esperado+ 56,0%</small>
+            </button>
+            
+            <button
+              type="button"
+              class="school-tab"
+              id="school-tab-3"
+              role="tab"
+              aria-selected="false"
+              aria-controls="school-panel-3"
+              data-school-tab="school-panel-3">
+              <span class="school-tab__meta">Escola #3</span>
+              <strong>E. M. Hilda Braga</strong>
+              <small>Esperado+ 60,0%</small>
+            </button>
+            
+        </div>
+        <div class="school-panels">
+          
+            <div
+              class="school-panel active"
+              id="school-panel-1"
+              role="tabpanel"
+              aria-labelledby="school-tab-1"
+              data-school-panel="school-panel-1">
+              <article class="school-profile">
+                <div class="school-profile__head">
+                  <div>
+                    <p class="mini-label">Escola #1</p>
+                    <h3>E. M. Jayme Siciliano</h3>
+                  </div>
+                  <div class="school-profile__band" style="background:#d2b24c;">Em consolidação</div>
+                </div>
+                <div class="school-profile__topline">
+                  <div class="adequacy-block">
+                    <span>Aprendizado adequado</span>
+                    <strong>60,0%</strong>
+                    <small>há base, mas ainda sem consistência</small>
+                  </div>
+                  <div class="school-meta">
+                    <div><span>Proficiência</span><strong>624</strong></div>
+                    <div><span>Participação</span><strong>91,0%</strong></div>
+                    <div><span>Crítico</span><strong>40,0%</strong></div>
+                    <div><span>Vs. rede</span><strong>2,65</strong></div>
+                  </div>
+                </div>
+                
+    <div class="adequacy-scale">
+      <div class="adequacy-scale__segments">
+        <span class="seg seg-1"></span>
+        <span class="seg seg-2"></span>
+        <span class="seg seg-3"></span>
+        <span class="seg seg-4"></span>
+      </div>
+      <div class="adequacy-scale__marker" style="left:60.0%"></div>
+      <div class="adequacy-scale__ticks">
+        <span>0</span><span>25</span><span>50</span><span>70</span><span>100</span>
+      </div>
+    </div>
+    
+                <div class="school-profile__distribution">
+                  <p class="mini-label">Distribuição do aprendizado</p>
+                  
+    <div class="level-stack"><span class="level-stack__segment" style="width:21.0%; background:#c95c54;"></span><span class="level-stack__segment" style="width:19.0%; background:#d8894d;"></span><span class="level-stack__segment" style="width:36.0%; background:#d2b24c;"></span><span class="level-stack__segment" style="width:24.0%; background:#2f855a;"></span></div>
+    <div class="level-legend"><div class="level-legend__item"><i style="background:#c95c54;"></i><span>Abaixo do básico</span><strong>21,0%</strong></div><div class="level-legend__item"><i style="background:#d8894d;"></i><span>Básico</span><strong>19,0%</strong></div><div class="level-legend__item"><i style="background:#d2b24c;"></i><span>Adequado</span><strong>36,0%</strong></div><div class="level-legend__item"><i style="background:#2f855a;"></i><span>Avançado</span><strong>24,0%</strong></div></div>
+    
+                </div>
+                <div class="school-profile__skills">
+                  <div>
+                    <p class="mini-label">Habilidades que mais precisam de reforço</p>
+                    <div class="skill-chip-row"><button type="button" class="skill-chip weak" aria-label="H 06 (D07)" data-tooltip="Inferir informações em textos verbais."><span class="skill-chip__label"><span class="skill-chip__main">H 06</span><span class="skill-chip__sub">(D07)</span></span><strong>47,0%</strong></button><button type="button" class="skill-chip weak" aria-label="H 05 (D04)" data-tooltip="Localizar informações explícitas em textos."><span class="skill-chip__label"><span class="skill-chip__main">H 05</span><span class="skill-chip__sub">(D04)</span></span><strong>52,0%</strong></button><button type="button" class="skill-chip weak" aria-label="H 08 (D08)" data-tooltip="Inferir informações em textos que articulam linguagem verbal e não verbal."><span class="skill-chip__label"><span class="skill-chip__main">H 08</span><span class="skill-chip__sub">(D08)</span></span><strong>56,0%</strong></button></div>
+                  </div>
+                  <div>
+                    <p class="mini-label">Habilidades mais consolidadas</p>
+                    <div class="skill-chip-row"><button type="button" class="skill-chip strong" aria-label="H 01 (D02)" data-tooltip="Ler palavras."><span class="skill-chip__label"><span class="skill-chip__main">H 01</span><span class="skill-chip__sub">(D02)</span></span><strong>95,0%</strong></button><button type="button" class="skill-chip strong" aria-label="H 03 (D03)" data-tooltip="Ler frases."><span class="skill-chip__label"><span class="skill-chip__main">H 03</span><span class="skill-chip__sub">(D03)</span></span><strong>89,0%</strong></button><button type="button" class="skill-chip strong" aria-label="H 02 (D01)" data-tooltip="Relacionar elementos sonoros das palavras com sua representação escrita."><span class="skill-chip__label"><span class="skill-chip__main">H 02</span><span class="skill-chip__sub">(D01)</span></span><strong>80,0%</strong></button></div>
+                  </div>
+                </div>
+              </article>
+              <div class="school-detail-panel">
+                <p class="mini-label">Análise das turmas da escola</p>
+                <div class="turma-card-grid school-turma-card-grid">
+                  
+    <article class="turma-card" style="--turma-accent:#d2b24c;">
+      <div class="turma-card__badges">
+        <span class="turma-pill turma-pill--status" style="background:#d2b24c22; color:#d2b24c; border-color:#d2b24c33;">Em consolidação</span>
+        <span class="turma-pill turma-pill--best">Melhor da escola</span>
+      </div>
+      <div class="turma-card__head">
+        <div class="rank-chip">1</div>
+        <div>
+          <h4>201 PARCIAL</h4>
+          <p>há base, mas ainda sem consistência</p>
+        </div>
+      </div>
+      <div class="turma-card__metrics">
+        <div><span>Proficiência</span><strong>660</strong></div>
+        <div><span>Participação</span><strong>88,0%</strong></div>
+        <div><span>Esperado+</span><strong>68,0%</strong></div>
+      </div>
+      <div class="turma-card__focus">
+        <span class="mini-label">Habilidade mais frágil</span>
+        <button type="button" class="skill-chip tag" aria-label="H 06 (D07)" data-tooltip="Inferir informações em textos verbais."><span class="skill-chip__label"><span class="skill-chip__main">H 06</span><span class="skill-chip__sub">(D07)</span></span></button>
+      </div>
+    </article>
+    
+    <article class="turma-card" style="--turma-accent:#d2b24c;">
+      <div class="turma-card__badges">
+        <span class="turma-pill turma-pill--status" style="background:#d2b24c22; color:#d2b24c; border-color:#d2b24c33;">Em consolidação</span>
+        
+      </div>
+      <div class="turma-card__head">
+        <div class="rank-chip">2</div>
+        <div>
+          <h4>200 PARCIAL</h4>
+          <p>há base, mas ainda sem consistência</p>
+        </div>
+      </div>
+      <div class="turma-card__metrics">
+        <div><span>Proficiência</span><strong>627</strong></div>
+        <div><span>Participação</span><strong>95,0%</strong></div>
+        <div><span>Esperado+</span><strong>67,0%</strong></div>
+      </div>
+      <div class="turma-card__focus">
+        <span class="mini-label">Habilidade mais frágil</span>
+        <button type="button" class="skill-chip tag" aria-label="H 06 (D07)" data-tooltip="Inferir informações em textos verbais."><span class="skill-chip__label"><span class="skill-chip__main">H 06</span><span class="skill-chip__sub">(D07)</span></span></button>
+      </div>
+    </article>
+    
+    <article class="turma-card" style="--turma-accent:#d8894d;">
+      <div class="turma-card__badges">
+        <span class="turma-pill turma-pill--status" style="background:#d8894d22; color:#d8894d; border-color:#d8894d33;">Atenção alta</span>
+        <span class="turma-pill turma-pill--worst">Maior atenção</span>
+      </div>
+      <div class="turma-card__head">
+        <div class="rank-chip">3</div>
+        <div>
+          <h4>202 PARCIAL</h4>
+          <p>aprendizado ainda insuficiente</p>
+        </div>
+      </div>
+      <div class="turma-card__metrics">
+        <div><span>Proficiência</span><strong>568</strong></div>
+        <div><span>Participação</span><strong>88,0%</strong></div>
+        <div><span>Esperado+</span><strong>40,0%</strong></div>
+      </div>
+      <div class="turma-card__focus">
+        <span class="mini-label">Habilidade mais frágil</span>
+        <button type="button" class="skill-chip tag" aria-label="H 08 (D08)" data-tooltip="Inferir informações em textos que articulam linguagem verbal e não verbal."><span class="skill-chip__label"><span class="skill-chip__main">H 08</span><span class="skill-chip__sub">(D08)</span></span></button>
+      </div>
+    </article>
+    
+                </div>
+              </div>
+              <div class="school-detail-panel">
+                <p class="mini-label">Heatmap das turmas da escola</p>
+                <div class="heatmap-grid heatmap-grid--turma">
+                  
+    <article class="heatmap-card">
+      <div class="heatmap-card__head">
+        <div>
+          <h4>201 PARCIAL</h4>
+          <p>Domínio por habilidade da turma</p>
+        </div>
+        <div class="heatmap-card__meta"><div class="heatmap-card__meta-item"><span>Avaliados</span><strong>22</strong></div><div class="heatmap-card__meta-item"><span>Média</span><strong>71,2%</strong></div></div>
+      </div>
+      <div class="heatmap-card__grid"><button type="button" class="heat-tile" aria-label="H 01 (D02)" data-tooltip="Ler palavras." style="background:#2f855a; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 01</span><span class="skill-chip__sub">(D02)</span></span><strong>95,0%</strong></button><button type="button" class="heat-tile" aria-label="H 02 (D01)" data-tooltip="Relacionar elementos sonoros das palavras com sua representação escrita." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 02</span><span class="skill-chip__sub">(D01)</span></span><strong>59,0%</strong></button><button type="button" class="heat-tile" aria-label="H 03 (D03)" data-tooltip="Ler frases." style="background:#2f855a; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 03</span><span class="skill-chip__sub">(D03)</span></span><strong>100,0%</strong></button><button type="button" class="heat-tile" aria-label="H 04 (D05)" data-tooltip="Reconhecer a finalidade de um texto." style="background:#4c9f70; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 04</span><span class="skill-chip__sub">(D05)</span></span><strong>78,0%</strong></button><button type="button" class="heat-tile" aria-label="H 05 (D04)" data-tooltip="Localizar informações explícitas em textos." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 05</span><span class="skill-chip__sub">(D04)</span></span><strong>54,0%</strong></button><button type="button" class="heat-tile" aria-label="H 06 (D07)" data-tooltip="Inferir informações em textos verbais." style="background:#c95c54; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 06</span><span class="skill-chip__sub">(D07)</span></span><strong>44,0%</strong></button><button type="button" class="heat-tile" aria-label="H 07 (D06)" data-tooltip="Inferir o assunto de um texto." style="background:#4c9f70; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 07</span><span class="skill-chip__sub">(D06)</span></span><strong>74,0%</strong></button><button type="button" class="heat-tile" aria-label="H 08 (D08)" data-tooltip="Inferir informações em textos que articulam linguagem verbal e não verbal." style="background:#d2b24c; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 08</span><span class="skill-chip__sub">(D08)</span></span><strong>66,0%</strong></button></div>
+    </article>
+    
+    <article class="heatmap-card">
+      <div class="heatmap-card__head">
+        <div>
+          <h4>200 PARCIAL</h4>
+          <p>Domínio por habilidade da turma</p>
+        </div>
+        <div class="heatmap-card__meta"><div class="heatmap-card__meta-item"><span>Avaliados</span><strong>21</strong></div><div class="heatmap-card__meta-item"><span>Média</span><strong>69,5%</strong></div></div>
+      </div>
+      <div class="heatmap-card__grid"><button type="button" class="heat-tile" aria-label="H 01 (D02)" data-tooltip="Ler palavras." style="background:#2f855a; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 01</span><span class="skill-chip__sub">(D02)</span></span><strong>90,0%</strong></button><button type="button" class="heat-tile" aria-label="H 02 (D01)" data-tooltip="Relacionar elementos sonoros das palavras com sua representação escrita." style="background:#2f855a; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 02</span><span class="skill-chip__sub">(D01)</span></span><strong>90,0%</strong></button><button type="button" class="heat-tile" aria-label="H 03 (D03)" data-tooltip="Ler frases." style="background:#2f855a; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 03</span><span class="skill-chip__sub">(D03)</span></span><strong>100,0%</strong></button><button type="button" class="heat-tile" aria-label="H 04 (D05)" data-tooltip="Reconhecer a finalidade de um texto." style="background:#d2b24c; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 04</span><span class="skill-chip__sub">(D05)</span></span><strong>61,0%</strong></button><button type="button" class="heat-tile" aria-label="H 05 (D04)" data-tooltip="Localizar informações explícitas em textos." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 05</span><span class="skill-chip__sub">(D04)</span></span><strong>58,0%</strong></button><button type="button" class="heat-tile" aria-label="H 06 (D07)" data-tooltip="Inferir informações em textos verbais." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 06</span><span class="skill-chip__sub">(D07)</span></span><strong>50,0%</strong></button><button type="button" class="heat-tile" aria-label="H 07 (D06)" data-tooltip="Inferir o assunto de um texto." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 07</span><span class="skill-chip__sub">(D06)</span></span><strong>51,0%</strong></button><button type="button" class="heat-tile" aria-label="H 08 (D08)" data-tooltip="Inferir informações em textos que articulam linguagem verbal e não verbal." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 08</span><span class="skill-chip__sub">(D08)</span></span><strong>56,0%</strong></button></div>
+    </article>
+    
+    <article class="heatmap-card">
+      <div class="heatmap-card__head">
+        <div>
+          <h4>202 PARCIAL</h4>
+          <p>Domínio por habilidade da turma</p>
+        </div>
+        <div class="heatmap-card__meta"><div class="heatmap-card__meta-item"><span>Avaliados</span><strong>15</strong></div><div class="heatmap-card__meta-item"><span>Média</span><strong>58,6%</strong></div></div>
+      </div>
+      <div class="heatmap-card__grid"><button type="button" class="heat-tile" aria-label="H 01 (D02)" data-tooltip="Ler palavras." style="background:#2f855a; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 01</span><span class="skill-chip__sub">(D02)</span></span><strong>100,0%</strong></button><button type="button" class="heat-tile" aria-label="H 02 (D01)" data-tooltip="Relacionar elementos sonoros das palavras com sua representação escrita." style="background:#2f855a; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 02</span><span class="skill-chip__sub">(D01)</span></span><strong>87,0%</strong></button><button type="button" class="heat-tile" aria-label="H 03 (D03)" data-tooltip="Ler frases." style="background:#d2b24c; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 03</span><span class="skill-chip__sub">(D03)</span></span><strong>67,0%</strong></button><button type="button" class="heat-tile" aria-label="H 04 (D05)" data-tooltip="Reconhecer a finalidade de um texto." style="background:#c95c54; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 04</span><span class="skill-chip__sub">(D05)</span></span><strong>39,0%</strong></button><button type="button" class="heat-tile" aria-label="H 05 (D04)" data-tooltip="Localizar informações explícitas em textos." style="background:#c95c54; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 05</span><span class="skill-chip__sub">(D04)</span></span><strong>40,0%</strong></button><button type="button" class="heat-tile" aria-label="H 06 (D07)" data-tooltip="Inferir informações em textos verbais." style="background:#c95c54; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 06</span><span class="skill-chip__sub">(D07)</span></span><strong>47,0%</strong></button><button type="button" class="heat-tile" aria-label="H 07 (D06)" data-tooltip="Inferir o assunto de um texto." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 07</span><span class="skill-chip__sub">(D06)</span></span><strong>52,0%</strong></button><button type="button" class="heat-tile" aria-label="H 08 (D08)" data-tooltip="Inferir informações em textos que articulam linguagem verbal e não verbal." style="background:#c95c54; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 08</span><span class="skill-chip__sub">(D08)</span></span><strong>37,0%</strong></button></div>
+    </article>
+    
+                </div>
+              </div>
+            </div>
+            
+            <div
+              class="school-panel"
+              id="school-panel-2"
+              role="tabpanel"
+              aria-labelledby="school-tab-2"
+              data-school-panel="school-panel-2" hidden>
+              <article class="school-profile">
+                <div class="school-profile__head">
+                  <div>
+                    <p class="mini-label">Escola #2</p>
+                    <h3>E. M. Maria Semedo de Andrade</h3>
+                  </div>
+                  <div class="school-profile__band" style="background:#d2b24c;">Em consolidação</div>
+                </div>
+                <div class="school-profile__topline">
+                  <div class="adequacy-block">
+                    <span>Aprendizado adequado</span>
+                    <strong>56,0%</strong>
+                    <small>há base, mas ainda sem consistência</small>
+                  </div>
+                  <div class="school-meta">
+                    <div><span>Proficiência</span><strong>622</strong></div>
+                    <div><span>Participação</span><strong>90,0%</strong></div>
+                    <div><span>Crítico</span><strong>45,0%</strong></div>
+                    <div><span>Vs. rede</span><strong>0,65</strong></div>
+                  </div>
+                </div>
+                
+    <div class="adequacy-scale">
+      <div class="adequacy-scale__segments">
+        <span class="seg seg-1"></span>
+        <span class="seg seg-2"></span>
+        <span class="seg seg-3"></span>
+        <span class="seg seg-4"></span>
+      </div>
+      <div class="adequacy-scale__marker" style="left:56.0%"></div>
+      <div class="adequacy-scale__ticks">
+        <span>0</span><span>25</span><span>50</span><span>70</span><span>100</span>
+      </div>
+    </div>
+    
+                <div class="school-profile__distribution">
+                  <p class="mini-label">Distribuição do aprendizado</p>
+                  
+    <div class="level-stack"><span class="level-stack__segment" style="width:15.0%; background:#c95c54;"></span><span class="level-stack__segment" style="width:30.0%; background:#d8894d;"></span><span class="level-stack__segment" style="width:30.0%; background:#d2b24c;"></span><span class="level-stack__segment" style="width:26.0%; background:#2f855a;"></span></div>
+    <div class="level-legend"><div class="level-legend__item"><i style="background:#c95c54;"></i><span>Abaixo do básico</span><strong>15,0%</strong></div><div class="level-legend__item"><i style="background:#d8894d;"></i><span>Básico</span><strong>30,0%</strong></div><div class="level-legend__item"><i style="background:#d2b24c;"></i><span>Adequado</span><strong>30,0%</strong></div><div class="level-legend__item"><i style="background:#2f855a;"></i><span>Avançado</span><strong>26,0%</strong></div></div>
+    
+                </div>
+                <div class="school-profile__skills">
+                  <div>
+                    <p class="mini-label">Habilidades que mais precisam de reforço</p>
+                    <div class="skill-chip-row"><button type="button" class="skill-chip weak" aria-label="H 06 (D07)" data-tooltip="Inferir informações em textos verbais."><span class="skill-chip__label"><span class="skill-chip__main">H 06</span><span class="skill-chip__sub">(D07)</span></span><strong>47,0%</strong></button><button type="button" class="skill-chip weak" aria-label="H 05 (D04)" data-tooltip="Localizar informações explícitas em textos."><span class="skill-chip__label"><span class="skill-chip__main">H 05</span><span class="skill-chip__sub">(D04)</span></span><strong>51,0%</strong></button><button type="button" class="skill-chip weak" aria-label="H 08 (D08)" data-tooltip="Inferir informações em textos que articulam linguagem verbal e não verbal."><span class="skill-chip__label"><span class="skill-chip__main">H 08</span><span class="skill-chip__sub">(D08)</span></span><strong>57,0%</strong></button></div>
+                  </div>
+                  <div>
+                    <p class="mini-label">Habilidades mais consolidadas</p>
+                    <div class="skill-chip-row"><button type="button" class="skill-chip strong" aria-label="H 01 (D02)" data-tooltip="Ler palavras."><span class="skill-chip__label"><span class="skill-chip__main">H 01</span><span class="skill-chip__sub">(D02)</span></span><strong>98,0%</strong></button><button type="button" class="skill-chip strong" aria-label="H 02 (D01)" data-tooltip="Relacionar elementos sonoros das palavras com sua representação escrita."><span class="skill-chip__label"><span class="skill-chip__main">H 02</span><span class="skill-chip__sub">(D01)</span></span><strong>91,0%</strong></button><button type="button" class="skill-chip strong" aria-label="H 03 (D03)" data-tooltip="Ler frases."><span class="skill-chip__label"><span class="skill-chip__main">H 03</span><span class="skill-chip__sub">(D03)</span></span><strong>83,0%</strong></button></div>
+                  </div>
+                </div>
+              </article>
+              <div class="school-detail-panel">
+                <p class="mini-label">Análise das turmas da escola</p>
+                <div class="turma-card-grid school-turma-card-grid">
+                  
+    <article class="turma-card" style="--turma-accent:#d2b24c;">
+      <div class="turma-card__badges">
+        <span class="turma-pill turma-pill--status" style="background:#d2b24c22; color:#d2b24c; border-color:#d2b24c33;">Em consolidação</span>
+        
+      </div>
+      <div class="turma-card__head">
+        <div class="rank-chip">1</div>
+        <div>
+          <h4>200 INTEGRAL</h4>
+          <p>há base, mas ainda sem consistência</p>
+        </div>
+      </div>
+      <div class="turma-card__metrics">
+        <div><span>Proficiência</span><strong>622</strong></div>
+        <div><span>Participação</span><strong>90,0%</strong></div>
+        <div><span>Esperado+</span><strong>56,0%</strong></div>
+      </div>
+      <div class="turma-card__focus">
+        <span class="mini-label">Habilidade mais frágil</span>
+        <button type="button" class="skill-chip tag" aria-label="H 06 (D07)" data-tooltip="Inferir informações em textos verbais."><span class="skill-chip__label"><span class="skill-chip__main">H 06</span><span class="skill-chip__sub">(D07)</span></span></button>
+      </div>
+    </article>
+    
+                </div>
+              </div>
+              <div class="school-detail-panel">
+                <p class="mini-label">Heatmap das turmas da escola</p>
+                <div class="heatmap-grid heatmap-grid--turma">
+                  
+    <article class="heatmap-card">
+      <div class="heatmap-card__head">
+        <div>
+          <h4>200 INTEGRAL</h4>
+          <p>Domínio por habilidade da turma</p>
+        </div>
+        <div class="heatmap-card__meta"><div class="heatmap-card__meta-item"><span>Avaliados</span><strong>27</strong></div><div class="heatmap-card__meta-item"><span>Média</span><strong>69,9%</strong></div></div>
+      </div>
+      <div class="heatmap-card__grid"><button type="button" class="heat-tile" aria-label="H 01 (D02)" data-tooltip="Ler palavras." style="background:#2f855a; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 01</span><span class="skill-chip__sub">(D02)</span></span><strong>98,0%</strong></button><button type="button" class="heat-tile" aria-label="H 02 (D01)" data-tooltip="Relacionar elementos sonoros das palavras com sua representação escrita." style="background:#2f855a; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 02</span><span class="skill-chip__sub">(D01)</span></span><strong>91,0%</strong></button><button type="button" class="heat-tile" aria-label="H 03 (D03)" data-tooltip="Ler frases." style="background:#4c9f70; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 03</span><span class="skill-chip__sub">(D03)</span></span><strong>83,0%</strong></button><button type="button" class="heat-tile" aria-label="H 04 (D05)" data-tooltip="Reconhecer a finalidade de um texto." style="background:#d2b24c; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 04</span><span class="skill-chip__sub">(D05)</span></span><strong>67,0%</strong></button><button type="button" class="heat-tile" aria-label="H 05 (D04)" data-tooltip="Localizar informações explícitas em textos." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 05</span><span class="skill-chip__sub">(D04)</span></span><strong>51,0%</strong></button><button type="button" class="heat-tile" aria-label="H 06 (D07)" data-tooltip="Inferir informações em textos verbais." style="background:#c95c54; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 06</span><span class="skill-chip__sub">(D07)</span></span><strong>47,0%</strong></button><button type="button" class="heat-tile" aria-label="H 07 (D06)" data-tooltip="Inferir o assunto de um texto." style="background:#d2b24c; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 07</span><span class="skill-chip__sub">(D06)</span></span><strong>65,0%</strong></button><button type="button" class="heat-tile" aria-label="H 08 (D08)" data-tooltip="Inferir informações em textos que articulam linguagem verbal e não verbal." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 08</span><span class="skill-chip__sub">(D08)</span></span><strong>57,0%</strong></button></div>
+    </article>
+    
+                </div>
+              </div>
+            </div>
+            
+            <div
+              class="school-panel"
+              id="school-panel-3"
+              role="tabpanel"
+              aria-labelledby="school-tab-3"
+              data-school-panel="school-panel-3" hidden>
+              <article class="school-profile">
+                <div class="school-profile__head">
+                  <div>
+                    <p class="mini-label">Escola #3</p>
+                    <h3>E. M. Hilda Braga</h3>
+                  </div>
+                  <div class="school-profile__band" style="background:#d2b24c;">Em consolidação</div>
+                </div>
+                <div class="school-profile__topline">
+                  <div class="adequacy-block">
+                    <span>Aprendizado adequado</span>
+                    <strong>60,0%</strong>
+                    <small>há base, mas ainda sem consistência</small>
+                  </div>
+                  <div class="school-meta">
+                    <div><span>Proficiência</span><strong>615</strong></div>
+                    <div><span>Participação</span><strong>93,0%</strong></div>
+                    <div><span>Crítico</span><strong>41,0%</strong></div>
+                    <div><span>Vs. rede</span><strong>-6,35</strong></div>
+                  </div>
+                </div>
+                
+    <div class="adequacy-scale">
+      <div class="adequacy-scale__segments">
+        <span class="seg seg-1"></span>
+        <span class="seg seg-2"></span>
+        <span class="seg seg-3"></span>
+        <span class="seg seg-4"></span>
+      </div>
+      <div class="adequacy-scale__marker" style="left:60.0%"></div>
+      <div class="adequacy-scale__ticks">
+        <span>0</span><span>25</span><span>50</span><span>70</span><span>100</span>
+      </div>
+    </div>
+    
+                <div class="school-profile__distribution">
+                  <p class="mini-label">Distribuição do aprendizado</p>
+                  
+    <div class="level-stack"><span class="level-stack__segment" style="width:19.0%; background:#c95c54;"></span><span class="level-stack__segment" style="width:22.0%; background:#d8894d;"></span><span class="level-stack__segment" style="width:41.0%; background:#d2b24c;"></span><span class="level-stack__segment" style="width:19.0%; background:#2f855a;"></span></div>
+    <div class="level-legend"><div class="level-legend__item"><i style="background:#c95c54;"></i><span>Abaixo do básico</span><strong>19,0%</strong></div><div class="level-legend__item"><i style="background:#d8894d;"></i><span>Básico</span><strong>22,0%</strong></div><div class="level-legend__item"><i style="background:#d2b24c;"></i><span>Adequado</span><strong>41,0%</strong></div><div class="level-legend__item"><i style="background:#2f855a;"></i><span>Avançado</span><strong>19,0%</strong></div></div>
+    
+                </div>
+                <div class="school-profile__skills">
+                  <div>
+                    <p class="mini-label">Habilidades que mais precisam de reforço</p>
+                    <div class="skill-chip-row"><button type="button" class="skill-chip weak" aria-label="H 06 (D07)" data-tooltip="Inferir informações em textos verbais."><span class="skill-chip__label"><span class="skill-chip__main">H 06</span><span class="skill-chip__sub">(D07)</span></span><strong>41,0%</strong></button><button type="button" class="skill-chip weak" aria-label="H 08 (D08)" data-tooltip="Inferir informações em textos que articulam linguagem verbal e não verbal."><span class="skill-chip__label"><span class="skill-chip__main">H 08</span><span class="skill-chip__sub">(D08)</span></span><strong>51,0%</strong></button><button type="button" class="skill-chip weak" aria-label="H 07 (D06)" data-tooltip="Inferir o assunto de um texto."><span class="skill-chip__label"><span class="skill-chip__main">H 07</span><span class="skill-chip__sub">(D06)</span></span><strong>53,0%</strong></button></div>
+                  </div>
+                  <div>
+                    <p class="mini-label">Habilidades mais consolidadas</p>
+                    <div class="skill-chip-row"><button type="button" class="skill-chip strong" aria-label="H 01 (D02)" data-tooltip="Ler palavras."><span class="skill-chip__label"><span class="skill-chip__main">H 01</span><span class="skill-chip__sub">(D02)</span></span><strong>94,0%</strong></button><button type="button" class="skill-chip strong" aria-label="H 03 (D03)" data-tooltip="Ler frases."><span class="skill-chip__label"><span class="skill-chip__main">H 03</span><span class="skill-chip__sub">(D03)</span></span><strong>89,0%</strong></button><button type="button" class="skill-chip strong" aria-label="H 02 (D01)" data-tooltip="Relacionar elementos sonoros das palavras com sua representação escrita."><span class="skill-chip__label"><span class="skill-chip__main">H 02</span><span class="skill-chip__sub">(D01)</span></span><strong>78,0%</strong></button></div>
+                  </div>
+                </div>
+              </article>
+              <div class="school-detail-panel">
+                <p class="mini-label">Análise das turmas da escola</p>
+                <div class="turma-card-grid school-turma-card-grid">
+                  
+    <article class="turma-card" style="--turma-accent:#d2b24c;">
+      <div class="turma-card__badges">
+        <span class="turma-pill turma-pill--status" style="background:#d2b24c22; color:#d2b24c; border-color:#d2b24c33;">Em consolidação</span>
+        
+      </div>
+      <div class="turma-card__head">
+        <div class="rank-chip">1</div>
+        <div>
+          <h4>2 ANO</h4>
+          <p>há base, mas ainda sem consistência</p>
+        </div>
+      </div>
+      <div class="turma-card__metrics">
+        <div><span>Proficiência</span><strong>615</strong></div>
+        <div><span>Participação</span><strong>93,0%</strong></div>
+        <div><span>Esperado+</span><strong>60,0%</strong></div>
+      </div>
+      <div class="turma-card__focus">
+        <span class="mini-label">Habilidade mais frágil</span>
+        <button type="button" class="skill-chip tag" aria-label="H 06 (D07)" data-tooltip="Inferir informações em textos verbais."><span class="skill-chip__label"><span class="skill-chip__main">H 06</span><span class="skill-chip__sub">(D07)</span></span></button>
+      </div>
+    </article>
+    
+                </div>
+              </div>
+              <div class="school-detail-panel">
+                <p class="mini-label">Heatmap das turmas da escola</p>
+                <div class="heatmap-grid heatmap-grid--turma">
+                  
+    <article class="heatmap-card">
+      <div class="heatmap-card__head">
+        <div>
+          <h4>2 ANO</h4>
+          <p>Domínio por habilidade da turma</p>
+        </div>
+        <div class="heatmap-card__meta"><div class="heatmap-card__meta-item"><span>Avaliados</span><strong>27</strong></div><div class="heatmap-card__meta-item"><span>Média</span><strong>66,9%</strong></div></div>
+      </div>
+      <div class="heatmap-card__grid"><button type="button" class="heat-tile" aria-label="H 01 (D02)" data-tooltip="Ler palavras." style="background:#2f855a; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 01</span><span class="skill-chip__sub">(D02)</span></span><strong>94,0%</strong></button><button type="button" class="heat-tile" aria-label="H 02 (D01)" data-tooltip="Relacionar elementos sonoros das palavras com sua representação escrita." style="background:#4c9f70; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 02</span><span class="skill-chip__sub">(D01)</span></span><strong>78,0%</strong></button><button type="button" class="heat-tile" aria-label="H 03 (D03)" data-tooltip="Ler frases." style="background:#2f855a; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 03</span><span class="skill-chip__sub">(D03)</span></span><strong>89,0%</strong></button><button type="button" class="heat-tile" aria-label="H 04 (D05)" data-tooltip="Reconhecer a finalidade de um texto." style="background:#4c9f70; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 04</span><span class="skill-chip__sub">(D05)</span></span><strong>74,0%</strong></button><button type="button" class="heat-tile" aria-label="H 05 (D04)" data-tooltip="Localizar informações explícitas em textos." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 05</span><span class="skill-chip__sub">(D04)</span></span><strong>55,0%</strong></button><button type="button" class="heat-tile" aria-label="H 06 (D07)" data-tooltip="Inferir informações em textos verbais." style="background:#c95c54; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 06</span><span class="skill-chip__sub">(D07)</span></span><strong>41,0%</strong></button><button type="button" class="heat-tile" aria-label="H 07 (D06)" data-tooltip="Inferir o assunto de um texto." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 07</span><span class="skill-chip__sub">(D06)</span></span><strong>53,0%</strong></button><button type="button" class="heat-tile" aria-label="H 08 (D08)" data-tooltip="Inferir informações em textos que articulam linguagem verbal e não verbal." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 08</span><span class="skill-chip__sub">(D08)</span></span><strong>51,0%</strong></button></div>
+    </article>
+    
+                </div>
+              </div>
+            </div>
+            
+        </div>
+      </div>
+    </section>
+
+    <section id="habilidades" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Habilidades da Rede</h2>
+          <p>Recorte das habilidades prioritárias da rede, com heatmap geral municipal. As leituras por turma ficam disponíveis dentro da escola selecionada.</p>
+        </div>
+      </div>
+      <div class="priority-grid">
+        <div class="priority-panel">
+          <p class="mini-label">Menor domínio na rede</p>
+          
+            <div class="priority-row">
+              <div>
+                <p class="mini-label">Prioridade</p>
+                <button type="button" class="skill-chip priority" aria-label="H 06 (D07)" data-tooltip="Inferir informações em textos verbais."><span class="skill-chip__label"><span class="skill-chip__main">H 06</span><span class="skill-chip__sub">(D07)</span></span></button>
+              </div>
+              <div class="priority-score">
+                <strong>45,5%</strong>
+                <div class="bar-track"><span class="bar-fill" style="width:45.5%; background:#c95c54;"></span></div>
+              </div>
+            </div>
+            
+            <div class="priority-row">
+              <div>
+                <p class="mini-label">Prioridade</p>
+                <button type="button" class="skill-chip priority" aria-label="H 05 (D04)" data-tooltip="Localizar informações explícitas em textos."><span class="skill-chip__label"><span class="skill-chip__main">H 05</span><span class="skill-chip__sub">(D04)</span></span></button>
+              </div>
+              <div class="priority-score">
+                <strong>52,5%</strong>
+                <div class="bar-track"><span class="bar-fill" style="width:52.5%; background:#d8894d;"></span></div>
+              </div>
+            </div>
+            
+            <div class="priority-row">
+              <div>
+                <p class="mini-label">Prioridade</p>
+                <button type="button" class="skill-chip priority" aria-label="H 08 (D08)" data-tooltip="Inferir informações em textos que articulam linguagem verbal e não verbal."><span class="skill-chip__label"><span class="skill-chip__main">H 08</span><span class="skill-chip__sub">(D08)</span></span></button>
+              </div>
+              <div class="priority-score">
+                <strong>55,0%</strong>
+                <div class="bar-track"><span class="bar-fill" style="width:55.0%; background:#d8894d;"></span></div>
+              </div>
+            </div>
+            
+        </div>
+        <div class="priority-panel">
+          <p class="mini-label">Habilidades consolidadas</p>
+          <div class="strength-stack">
+            <button type="button" class="skill-chip strong" aria-label="H 01 (D02)" data-tooltip="Ler palavras."><span class="skill-chip__label"><span class="skill-chip__main">H 01</span><span class="skill-chip__sub">(D02)</span></span><strong>95,5%</strong></button>
+            
+            <button type="button" class="skill-chip strong" aria-label="H 03 (D03)" data-tooltip="Ler frases."><span class="skill-chip__label"><span class="skill-chip__main">H 03</span><span class="skill-chip__sub">(D03)</span></span><strong>87,5%</strong></button>
+            
+            <button type="button" class="skill-chip strong" aria-label="H 02 (D01)" data-tooltip="Relacionar elementos sonoros das palavras com sua representação escrita."><span class="skill-chip__label"><span class="skill-chip__main">H 02</span><span class="skill-chip__sub">(D01)</span></span><strong>82,2%</strong></button>
+            </div>
+        </div>
+      </div>
+      <div class="heat-panel" style="margin-top:18px;">
+        <p class="mini-label">Heatmap geral da rede</p>
+        <div class="heatmap-grid">
+          
+    <article class="heatmap-card">
+      <div class="heatmap-card__head">
+        <div>
+          <h4>Rede municipal de MENDES</h4>
+          <p>Domínio médio ponderado por habilidade</p>
+        </div>
+        <div class="heatmap-card__meta"><div class="heatmap-card__meta-item"><span>Avaliados</span><strong>112</strong></div><div class="heatmap-card__meta-item"><span>Proficiência</span><strong>621,35</strong></div><div class="heatmap-card__meta-item"><span>Esperado+</span><strong>59,0%</strong></div></div>
+      </div>
+      <div class="heatmap-card__grid"><button type="button" class="heat-tile" aria-label="H 01 (D02)" data-tooltip="Ler palavras." style="background:#2f855a; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 01</span><span class="skill-chip__sub">(D02)</span></span><strong>95,5%</strong></button><button type="button" class="heat-tile" aria-label="H 02 (D01)" data-tooltip="Relacionar elementos sonoros das palavras com sua representação escrita." style="background:#4c9f70; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 02</span><span class="skill-chip__sub">(D01)</span></span><strong>82,2%</strong></button><button type="button" class="heat-tile" aria-label="H 03 (D03)" data-tooltip="Ler frases." style="background:#2f855a; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 03</span><span class="skill-chip__sub">(D03)</span></span><strong>87,5%</strong></button><button type="button" class="heat-tile" aria-label="H 04 (D05)" data-tooltip="Reconhecer a finalidade de um texto." style="background:#d2b24c; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 04</span><span class="skill-chip__sub">(D05)</span></span><strong>64,5%</strong></button><button type="button" class="heat-tile" aria-label="H 05 (D04)" data-tooltip="Localizar informações explícitas em textos." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 05</span><span class="skill-chip__sub">(D04)</span></span><strong>52,5%</strong></button><button type="button" class="heat-tile" aria-label="H 06 (D07)" data-tooltip="Inferir informações em textos verbais." style="background:#c95c54; color:#ffffff;"><span class="skill-chip__label"><span class="skill-chip__main">H 06</span><span class="skill-chip__sub">(D07)</span></span><strong>45,5%</strong></button><button type="button" class="heat-tile" aria-label="H 07 (D06)" data-tooltip="Inferir o assunto de um texto." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 07</span><span class="skill-chip__sub">(D06)</span></span><strong>59,0%</strong></button><button type="button" class="heat-tile" aria-label="H 08 (D08)" data-tooltip="Inferir informações em textos que articulam linguagem verbal e não verbal." style="background:#d8894d; color:#263040;"><span class="skill-chip__label"><span class="skill-chip__main">H 08</span><span class="skill-chip__sub">(D08)</span></span><strong>55,0%</strong></button></div>
+    </article>
+    
+        </div>
+      </div>
+    </section>
+
+    <section id="acoes" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Encaminhamentos Sugeridos</h2>
+          <p>Proposta de leitura executiva para a fala da Secretaria e para o plano de ação imediato.</p>
+        </div>
+      </div>
+      <div class="actions-grid">
+        
+            <article class="action-card">
+              <h4>Foco imediato de recomposição</h4>
+              <p>Organizar intervenções de leitura e compreensão com foco nas habilidades H 06 (D07), H 05 (D04), H 08 (D08).</p>
+            </article>
+            
+            <article class="action-card">
+              <h4>Difusão de prática de referência</h4>
+              <p>Sistematizar estratégias da escola E. M. Jayme Siciliano e, em especial, da turma 201 PARCIAL para compartilhar rotinas de sucesso na rede.</p>
+            </article>
+            
+            <article class="action-card">
+              <h4>Monitoramento intensivo</h4>
+              <p>Acompanhar quinzenalmente a turma 202 PARCIAL da escola E. M. Jayme Siciliano, que concentrou a menor proficiência do recorte.</p>
+            </article>
+            
+            <article class="action-card">
+              <h4>Sustentar a presença</h4>
+              <p>Manter a participação acima de 90% e buscar fechamento do gap remanescente de 8,9% entre previstos e avaliados.</p>
+            </article>
+            
+      </div>
+    </section>
+
+  </main>
+  <script>
+    (() => {
+      const tabs = Array.from(document.querySelectorAll("[data-school-tab]"));
+      const panels = Array.from(document.querySelectorAll("[data-school-panel]"));
+      if (!tabs.length || !panels.length) {
+        return;
+      }
+
+      const activateSchoolTab = (panelId) => {
+        tabs.forEach((tab, index) => {
+          const isActive = tab.dataset.schoolTab === panelId;
+          tab.classList.toggle("active", isActive);
+          tab.setAttribute("aria-selected", isActive ? "true" : "false");
+          tab.tabIndex = isActive ? 0 : -1;
+          if (isActive) {
+            tabs[index].focus({ preventScroll: true });
+          }
+        });
+
+        panels.forEach((panel) => {
+          const isActive = panel.dataset.schoolPanel === panelId;
+          panel.classList.toggle("active", isActive);
+          if (isActive) {
+            panel.removeAttribute("hidden");
+          } else {
+            panel.setAttribute("hidden", "hidden");
+          }
+        });
+      };
+
+      tabs.forEach((tab, index) => {
+        tab.tabIndex = index === 0 ? 0 : -1;
+        tab.addEventListener("click", () => activateSchoolTab(tab.dataset.schoolTab));
+        tab.addEventListener("keydown", (event) => {
+          if (!["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
+            return;
+          }
+          event.preventDefault();
+          let targetIndex = index;
+          if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+            targetIndex = (index + 1) % tabs.length;
+          }
+          if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+            targetIndex = (index - 1 + tabs.length) % tabs.length;
+          }
+          if (event.key === "Home") {
+            targetIndex = 0;
+          }
+          if (event.key === "End") {
+            targetIndex = tabs.length - 1;
+          }
+          activateSchoolTab(tabs[targetIndex].dataset.schoolTab);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
