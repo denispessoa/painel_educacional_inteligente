@@ -6,11 +6,20 @@ Pacote minimo para gerar analise em Excel, dashboard HTML e apresentacao PowerPo
 
 - `scripts/`: motores Python da analise
 - `dados_auxiliares/`: legenda das habilidades do AlfabetizaRJ
+- `docs/`: documentacao tecnica para manutencao da dashboard
 - `entrada/`: pasta sugerida para colocar os arquivos `.xls`, `.xlsx` ou `.csv`
 - `saida/`: pasta onde os arquivos gerados vao aparecer
 - `instalar_ambiente.ps1`: prepara um ambiente Python local
 - `gerar_excel.ps1`: gera o workbook analitico
 - `gerar_dashboard.ps1`: gera dashboard HTML e PowerPoint
+
+## Documentacao tecnica
+
+Antes de alterar o HTML ou os scripts, consulte:
+
+- `docs/GUIA_TECNICO_DASHBOARD.md`: arquitetura, fluxo de dados e pontos de alteracao.
+- `docs/DECISOES_TECNICAS_E_BACKLOG.md`: o que ja foi decidido e o que ainda pode ser feito.
+- `docs/CHECKLIST_PARA_DEVS_E_AGENTS.md`: checklist para devs e agents antes/depois de alterar.
 
 ## Requisitos
 
